@@ -14,7 +14,7 @@ FirstApp::Application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
-  config.action_mailer.raise_delivery_errors = false
+#  config.action_mailer.raise_delivery_errors = false
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
@@ -36,21 +36,15 @@ FirstApp::Application.configure do
   config.assets.debug = true
   
   config.action_mailer.perform_deliveries = true
-  
-  config.action_mailer.delivery_method = :smtp  
 
   config.action_mailer.default_url_options = { :host => "edex-course-childeroland.c9users.io" }
-  
-  config.action_mailer.smtp_settings = {
-    :address              => "smtp.zoho.com",
-    :port                 =>  465,
-    :domain               => 'edex-course-childeroland.c9users.io',
-    :user_name            => "stemloops@zoho.com",
-    :password             => "B1gbottom",         
-    :authentication       => :login,
-    :ssl                  => true,
-    :tls                  => true,
-    :enable_starttls_auto => true    
-
-  }
+  # config.action_mailer.delivery_method = :smtp 
+  # config.action_mailer.smtp_settings = {
+  #   address:              'smtp.gmail.com',
+  #   port:                 587,
+  #   domain:               'gmail.com',
+  #   user_name:            'stemloops@gmail.com',
+  #   password:             'B1gbottle',
+  #   authentication:       :login,
+  #   enable_starttls_auto: true  }
 end

@@ -1,14 +1,11 @@
 
+ActionMailer::Base.perform_deliveries = true
 ActionMailer::Base.delivery_method = :smtp 
 ActionMailer::Base.smtp_settings = {
-    :address              => "smtp.zoho.com",
-    :port                 =>  465,
-    :domain               => 'edex-course-childeroland.c9users.io',
-    :user_name            => "stemloops@zoho.com",
-    :password             => "B1gbottom",         
-    :authentication       => :login,
-    :ssl                  => true,
-    :tls                  => true,
-    :enable_starttls_auto => true    
-
-  }
+    address:              'smtp.gmail.com',
+    port:                 587,
+    domain:               'gmail.com',
+    user_name:            'bunnidge@gmail.com',
+    password:             'Kl1ngons',
+    authentication:       :login,
+    enable_starttls_auto: true  }
