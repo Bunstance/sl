@@ -1,0 +1,18 @@
+<li>
+  <%= gravatar_for user, size: 52 %>
+
+  <%= user.id %>
+  <%= link_to user.name, user %>
+  <%= user.email %>
+  | last activity
+  <%= time_ago_in_words(user.updated_at) %>  
+  ago
+  <% unless user.confirmed %>
+  	| <font color=#833> unconfirmed <font color="black"> 
+  <% end %>
+  | activity <%= user.item_successes.length %>
+  <% if current_user.admin? && !current_user?(user) %>
+    | <%= link_to "delete", user, method: :delete,
+                                  data: { confirm: "You sure?" } %>
+  <% end %>
+</li>

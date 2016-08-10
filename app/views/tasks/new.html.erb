@@ -1,0 +1,140 @@
+<% provide(:title,  "New Task") %>
+
+
+<h1> This is h1</h1><br>
+<h2> This is h2</h2><br>
+<h3> This is h3</h3><br>
+<h4> This is h4</h4><br>
+<h5> This is h5</h5><br>
+<h6> This is h6</h6><br>
+<h7> This is h7</h7><br>
+<h8> This is h8</h8><br>
+<h9> This is h9</h9><br>
+<h10> This is h10</h10><br>
+<h11> This is h11</h11><br>
+
+
+Content so far:
+
+<% @contents.each do |thing| %>
+	<% if thing[:question] %>
+		<br><h9><%= thing[:text] %></h9>
+		<table>
+		<% (0..thing[:tops].count - 1).each do |i|%>
+		<tr><h10>
+			<td class = "top">
+			<%= thing[:tops][i]%>
+			</td>
+			<td>
+			<input class = "ans_field" type="textarea"  name="@ans[]" value=<%= thing[:answers][i]%> rows="1" cols="20" >
+			</td>
+			<td class = "tail">
+			<%= thing[:tails][i]%>
+			</td>
+			</h10>
+		</tr>
+		<% end %>
+		</table>
+		
+	<% else %>
+	
+	
+	
+		<% if thing[:category]=="text" %>
+	        <br><br><h9> <%= thing[:data] %> </h9> 
+	    <% elsif thing[:category]=="image" %>   
+	    	<br><br><h2> <img src = <%= thing[:data] %> /> </h2> 
+	    <% elsif thing[:category]=="video" %>
+		    <br><br><iframe width="600" height="450"
+			src=<%= thing[:data] %>>
+			</iframe>
+	    	</iframe>
+	    <% end %>
+		
+	
+	
+		
+	<% end %>
+			
+		
+<% end %>
+
+
+
+
+
+
+<br><br>Elements available:
+<%= will_paginate @elements, :param_name => 'epage'%>
+
+
+<%= form_tag new_task_path, :method => 'get' do %>
+
+<%= hidden_field_tag :content, @content.to_s %>
+	<%=render 'layouts/indexintro' %>
+
+<% end %>
+
+<table class="table" align="left">
+<tr>  
+	<th><%= sortable "id" %></th>
+	<th> <%= sortable "name" %> </th>
+	<th> <%= sortable "author" %> </th>    
+	<th> Category </th>  
+	<th> <%= sortable "tags" %> </th>
+	<th> </th>
+</tr>
+
+	<% for element in @elements %>
+	
+	    <%= render element  %>
+	<% end %>
+
+<tr> <td colspan="6">
+
+Questions available:
+<%= will_paginate @questions, :param_name => 'qpage'%>
+
+
+<%= form_tag new_task_path, :method => 'get' do %>
+<%= hidden_field_tag :content, @content.to_s  %>
+
+	<%=render 'layouts/indexintro' %>
+
+<% end %>
+
+</td>
+</tr>
+
+<tr>  
+	<th><%= sortable "id" %></th>
+	<th> <%= sortable "name" %> </th>
+	<th> <%= sortable "author" %> </th>    
+	<th> Text </th>  
+	<th> <%= sortable "tags" %> </th>
+	<th> </th>
+</tr>
+
+	<% for question in @questions %>
+	
+	    <%= render question  %>
+	<% end %>
+
+
+
+</table>
+
+<%= form_for(@task) do |f| %>
+
+  <%= f.label :name, :style => "font-size: 1.7em;"%>
+  <%= f.text_field :name %>
+
+  <%= f.label :tags, :style => "font-size: 1.7em;"%>
+  <%= f.text_field :tags %>
+
+  <%= f.label :content, :style => "font-size: 1.7em;"%> 
+  <%= f.text_field :content,  :value => @content %>
+
+
+  <%= f.submit "Create Task", class: "btn btn-large btn-primary" %>
+<% end %>

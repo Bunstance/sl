@@ -1,0 +1,92 @@
+<% provide(:title, "#{@task.id}") %>
+
+
+<div class = 'title'>
+  Task <%= @task.name %>
+  Task <%= @data %>
+  noodoo <%= @noodoo %>
+  olddoo <%= @olddoo %>
+
+  user <%= current_user %>
+</div>
+</br>
+
+<% if @data[:complete]%>
+  <div class = 'subhead'>
+    You have completed this task with <%= @data[:resets]%> reset(s). You can repeat for revision.
+  </div>
+  
+<% end %>
+
+<% j = 0 %>
+<% k = 0 %>
+<% @contents.count.times do |i| %>
+  <% thing = @contents[i] %>
+  <div class = 'outline'>
+    
+	<% if thing[:question] %>
+		<h9><%= thing[:text] %></h9>
+		
+	<%=form_tag task_path(anchor: "question#{i}"), id: "question#{i}", class: "question" %>
+																																			<table>
+		<% thing[:tops].count.times do |j|%>
+		<tr><h10>
+			<td class = "top">
+			<%= thing[:tops][j]%>
+			</td>
+			<td>
+			<input class = "ans_field" type="textarea" name="<%="ans#{i}[]"%>" rows="1" cols="20" value = <%= @answers[@ans_look_up[[i,j]]]%>  >
+			</td>
+			<td class = "tail">
+			<%= thing[:tails][j]%>
+			</td>
+			</h10>
+			<td> 
+			<% if thing[:scores][j] and thing[:scores][j] >= 0%>
+				<p align='right'> <img class = 'score_mark' src = <%= case thing[:scores][j]; when 0 then asset_path('Tick.png'); when 2 then asset_path('Cross.png'); when 1 then asset_path('Triangle.png');end %> width='40' height='40' /> </p> </td>
+			<% end %>
+		</tr>	
+		
+		<% end %>
+		</table>															
+		<div class='right'>
+			
+			<input type="hidden" name="attempted" value=<%=i%>>
+      <%=submit_tag "Check",  class: "answer_check"%>
+    </div>		
+		</form>
+		  <% unless @data[:complete]%>
+		    <div class = 'info'>
+		    	<% if @data[@que_look_up[i]] < 0 %>
+		    		You have successfully answered this question
+		    	<% else %>
+				    You have had <%="#{@data[@que_look_up[i]]}" || 0 %> attempts out of 3
+				  <% end %>
+		    
+		    </div>
+		  <% end %>
+
+	<% else %>
+	
+	
+	
+	<% if thing[:category]=="text" %>
+	  <h9> <%= thing[:data] %> </h9> 
+  <% elsif thing[:category]=="image" %>   
+  	<h2> <img src = <%= thing[:data] %> /> </h2> 
+  <% elsif thing[:category]=="video" %>
+    <iframe width="600" height="450"
+		src=<%= thing[:data] %>>
+		</iframe>
+  <% end %>
+		
+	
+	
+		
+	<% end %>
+	</div>
+	<br>
+			
+		
+<% end %>
+	<br>

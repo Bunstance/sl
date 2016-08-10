@@ -1,0 +1,48 @@
+<header class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    
+    <div class="container">
+      <%= link_to "StemLoops", root_path, id: "logo" %>
+        
+      <nav>
+
+        <ul class="nav pull-left">
+          <% if signed_in? %>
+            <li><%= link_to current_user.name, current_user %></li>
+            <li><%= link_to  "Tags", edit_user_path(current_user,{:tagedit => 1})%></li>
+            <li><%= link_to  "Account", edit_user_path(current_user,{:tagedit => 0})%></li>
+            <li><%= link_to "Sign out", signout_path, {:method => "delete"} %> </li>
+          <% end %>
+          <li><%= link_to "Help", help_path %></li>
+          <% if signed_in? %>
+
+            <% if current_user.admin %>
+              <li><%= link_to "Users", users_path %></li>
+            <% end %>
+
+            <% if current_user.author %> 
+              <li><%= link_to "Questions", questions_path %></li>
+              <li><%= link_to "Elements", elements_path %></li>
+              <li><%= link_to "Items", items_path %></li>
+              <li><%= link_to "Courses", courses_path %></li>
+            <% end %>
+             
+          <% else %>
+            <li><%= link_to "Sign in", signin_path %></li>
+          <% end %>
+        </ul>
+      </nav>
+      <h2>
+    <% if session[:current_item_id] %>
+      Building item <%= session[:current_item_id] %>
+    <% end %>
+    <% if session[:current_course_id] %>
+      Building course <%= session[:current_course_id] %>
+    <% end %>
+  </h2>
+  
+    </div>
+    
+  </div>
+</header>
+

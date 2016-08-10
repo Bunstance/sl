@@ -1,0 +1,21 @@
+<% provide(:title, 'All users') %>
+<h1>All users</h1>
+
+<% if @admin %>
+  <%= form_tag "users/upload", multipart: true do%>
+    <h9>You can upload a .csv file of user details:</h9>
+    <%= file_field_tag "upload_file" %>
+    <%= submit_tag "Go" %> 
+  <% end %>
+<% end %>
+
+
+<%= will_paginate %>
+
+<ul class="users">
+  <% @users.each do |user| %>
+    <%= render user %>
+  <% end %>
+</ul>
+
+<%= will_paginate %>

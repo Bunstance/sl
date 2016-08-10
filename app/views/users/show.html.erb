@@ -1,0 +1,117 @@
+
+<% provide(:title, @user.name) %>
+
+<div class = title>
+
+<%= @user.name %>
+
+<br>
+</div>
+<br>
+<div class = outline>
+<h11>
+	
+	Click the name of a task in the table.
+	
+</h11>
+<br>
+<br>
+<table class = 'table'>
+	<tr class = 'dark'>
+		<th>Task</th>
+		<th>Status</th>
+		<th>Resets</th>
+	</tr>
+	
+	<% @user.task_list.each do |task| %>
+	<tr class = <%= @task_scores[task.id.to_i][0] == 'Complete' ? 'good' : 'bad' %> >
+		<td><%= link_to task.name, task, class: @task_scores[task.id.to_i][0] == 'Complete' ? 'good' : 'bad'%></td>
+		<td><%= @task_scores[task.id.to_i][0] %></td>
+		<td><%= @task_scores[task.id.to_i][1] %></td>
+	</tr>
+	<% end %>
+</table>
+</div>
+<br>
+<div class = 'outline'>
+<h11>
+<form>
+You can change your random number seed by clicking the button below.<br>
+This will change the numbers in all questions throughout the site, but <br>
+the system will remember which questions you have correctly answered.
+<%= submit_tag "Change", class: 'reseed', value: "Change my Numbers", name: "reseed" %>
+</form>
+</h11>
+</div>
+
+
+
+
+<%= @authorhtml.html_safe %>
+
+
+<% unless @user.group %>
+	<h5a>	
+
+</div>
+<br><br>
+<div class = 'outline info'>
+	Your current courses:<br>
+	</h5a>
+	<table class="table">
+	<% @index=0 %>
+	<% @oldcourses.each do  |course| %>
+		<tr>
+			<td style="vertical-align:middle">
+				<h5>
+					<course><%= link_to course.name, :controller => "profiles", :action =>"show", :user_id => @user.id, :course_id => course.id %></course><%= @score %>
+				</h5>
+			</td>
+			<td style="vertical-align:middle">
+				<img src="http://i970.photobucket.com/albums/ae189/gumboil/website/vbar.png" width="20">
+				<% @scores[@index][2].each do %>
+					<% |stage| %>
+					<img src=<%="http://i970.photobucket.com/albums/ae189/gumboil/website/stars"+stage+".png"%> width="20">
+					<img src="http://i970.photobucket.com/albums/ae189/gumboil/website/starsfinishline.png" width="20">
+				<% end %>
+	
+			</td>
+			
+			<td style="vertical-align:middle">
+				<img src=<%="http://i970.photobucket.com/albums/ae189/gumboil/website/"+@scores[@index][1]%> width="57">
+	
+			</td>
+	
+			<!-- <td style="vertical-align:middle">
+				<h5a> Score: <%= @scores[@index][0] %> </h5a>
+			</td> -->
+	
+			<td style="vertical-align:middle">
+			<%= link_to "remove this course", {:controller => "profiles", :action => 'destroy', :id => @profiles[@index].id, :user_id => @user.id, :course_id => course.id}, :method => :delete, data: { confirm: "Are you sure?" } %> 
+	                                  
+			</td>
+			<% @index=@index+1 %>
+		</tr>
+	<% end %>
+	</table>
+	
+	<br>
+	<h5a>
+	New courses available:<br><br>
+	
+	
+	
+	<% @newcourses.each do  |course| %>
+		<course><%= course.name %> </course>
+		<%= link_to "Join course", :controller => "profiles", :action =>"new", :user_id => @user.id, :course_id => course.id %>
+		<br>
+		<% end %>
+	
+	<%="(none at present)" if @newcourses.count == 0%>
+	
+	<br><br>
+	
+	Your tags: <tag><%= @user.tag %></tag>
+	</h5a>
+<% end %>
+</div>

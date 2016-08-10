@@ -1,0 +1,29 @@
+
+  <tr>
+    <td>
+	     <%= course.id %>
+    </td>
+    <td>
+
+  <course><%= link_to course.name, course %></course>
+  </td>
+  <td>
+  <%= User.find_by_id(course.author).name %>
+  </td>
+    <td>
+  <i><%= course.tags %></i>
+  </td>
+    <td> 
+  <% if current_user.author? %>
+
+    <%= link_to "edit", edit_course_path(course.id) %>
+  <% end %>
+
+  <% if current_user.admin?||current_user.id==course.author %>
+
+    | <%= link_to "delete", course, method: :delete,
+                                  data: { confirm: "You sure?" } %>
+    <% end %>
+  </td>
+  </tr>
+

@@ -1,0 +1,53 @@
+
+<% provide(:title, @question.name) %>
+<h1>Viewing question <%=@question.id%> : <%=@question.name %></h1>
+
+
+<div class="row">
+  <div class="span11 well">
+    
+      This is how your question could appear:<h1><p></h1>
+
+      <h2> <%= @example_question %> </h2>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span11 well">
+      If the question uses parameters, you can explore the effect of changing them by reloading this page.
+      <h1><p></h1>
+
+      The parameters were generated using <%= @paramtext %>. The value(s) used in the example above are given by <%= @example_param_hash.to_s %>
+      <h1><p></h1>
+      
+      Answer(s) to example question: <%= @example_answers %>
+      <h1><p></h1>
+
+      Precision regime: <%= @question.precision_regime %>
+      <h1><p></h1>
+
+
+   
+  </div>
+</div>
+<p>
+<%= link_to "Edit this question", :controller => :questions, :action => :edit%>
+
+<%= link_to "Reload this question", :controller => :questions, :action => :show%>
+
+<%= link_to "Clone this question",  new_question_path(@question.id) %>
+
+<% if session[:current_item_id] %>
+        <% @item=Item.find_by_id(session[:current_item_id]) %>
+        <%= link_to("Add to Item", edit_item_path ) %>
+<% end %>
+
+
+
+<p>
+<h2>
+<% if session[:current_item_id] %>
+        <% @item=Item.find_by_id(session[:current_item_id]) %>
+        <%= link_to("Add to Item", edit_item_path ) %>
+      <% end %>
+</h2>

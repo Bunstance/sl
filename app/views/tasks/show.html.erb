@@ -1,0 +1,91 @@
+<% provide(:title, "#{@task.name}") %>
+
+
+<div class = 'title'>
+  <%= @task.name %> <br><br>
+<br>
+
+<h12>
+	
+	<% if @revision_mode %>
+		This task is now in revision mode and you can use the questions for extra practice as necessary. You can generate new questions by changing your random number seed on your home page.
+		<% else %>
+		The videos show the methods needed. You are not expected to solve the questions in your head. Write out solutions on paper as you normally would, then enter answers for checking. 	If you exceed the permitted attempts, the question will reset and you can try again.
+		<% end %>
+	
+</h12>
+<br>
+</div>
+</br>
+
+<% @n.times do |i| %>
+	
+  <div class = 'outline<%= "#{@divstyle[i]}" %>'  >
+	<% if @text[i] %>
+		<br><h9> <%= @text[i] %></h9>
+	<% elsif @image[i] %>
+		<br> <img src = <%= @image[i] %> />
+	<% elsif @video[i] %>
+	<iframe width="600" height="450"
+		src=<%=  @video[i] %>>
+		</iframe>
+	<%	end %>
+	<% if @parts[i] and @parts[i] > 0 %>
+		<%=form_tag task_path(anchor: "question#{i}"), id: "question#{i}", class: "question" %>
+	<table>
+		<% @parts[i].times do |j| %>
+		<tr><h10>
+			<td class = "top">
+			<%= @top[[i,j]] %>
+			</td>
+			<td>
+			<input class = "ans_field" type="textarea" name="<%="ans#{i}[]"%>" rows="1" cols="20" value = <%= @given_answer[[i,j]] %>  >
+			</td>
+			<td class = "tail">
+			<%= @tail[[i,j]] %>
+			</td>
+			</h10>
+			<td> 
+			<% if @feedback[[i,j]] and @feedback[[i,j]] >= 0%>
+				<p align='right'> <img class = 'score_mark' src = <%= case @feedback[[i,j]]; when 0 then asset_path('Tick.png'); when 2 then asset_path('Cross.png'); when 1 then asset_path('Triangle.png');end %> width='40' height='40' /> </p> </td> 
+			<% end %>
+			
+		</tr>	
+		
+		<% end %>
+		</table>	
+		<%= @progress_text[i] %>
+		<div class='right'>
+			<% if @finished %>
+				<input type="hidden" name="finished" value= "finished">
+	      <%=submit_tag "Finish",  class: "answer_check"%>	
+	    <% else %>
+				<input type="hidden" name="attempted" value=<%=i%>>
+	      <%=submit_tag "Check",  class: "answer_check"%>
+	    <% end %>
+    </div>		
+	<% end %>		
+	</form>
+	</div>
+	<br>
+<% end %>
+
+<% if current_user.author %>
+	<%= form_tag  do %>
+	
+		Allocate this task to groups:
+		<ul>
+		  <% @groups.each do |group| %>
+			  <li>
+		        <%= check_box_tag 'group_ids[]', group.id, @set[group.id] %>
+		        <%= group.name %>
+		        <%= group.tasks %>
+		      </li>
+		  <% end %>
+		</ul>
+		<%=submit_tag "Set it!", name: "assign"%>
+	<% end %>
+<% end %>
+
+
+

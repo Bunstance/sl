@@ -1,0 +1,47 @@
+<% provide(:title,  @item.name) %>
+
+<h1>Update Item <%= @item.id %>: <%= @item.name %> </h1>
+
+<div class="row">
+  <aside class="span12">
+    <section>
+       <br>
+      	Showing Item <%= @item.id %> <p>
+
+        <%= @item_html.html_safe %>
+
+
+        Content: <%= @item.content %><%= @content%> <p>
+        Name: <%= @item.name %> <p>
+        
+        Tags: <%= @item.tags %> <p>
+        
+        <%= link_to "Add a new element", elements_path %><p>
+
+        <%= link_to "Add a new question", questions_path %><p>
+
+      
+    </section>
+  </aside>
+</div>
+
+<div class="row">
+  <div class="span10">
+  <%= form_for(@item) do |f| %>
+
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+
+      <%= f.label :content %>
+      <%= f.text_field :content %>
+      Example: ["2","4h3h5","Q3", "Q7h6"] means element id 2 followed by element id 4 with elements 3 and 5 under hint buttons, then question id 3 and question id 7 with element id 6 under a hint button"
+
+      <%= f.label :tags %>
+      <%= f.text_field :tags %>
+
+      <%= f.submit "Save changes", class: "btn btn-large btn-primary" %>
+    <% end %>
+
+  </div>
+</div>
+

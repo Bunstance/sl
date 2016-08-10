@@ -1,0 +1,42 @@
+<% provide(:title, 'Elements Index') %>
+<h1>Elements Index</h1>
+<%= will_paginate %>
+
+<%= link_to("New Element", new_element_path) %><br><br>
+<% if session[:current_item_id] %>
+<%= link_to("Go to Item "+session[:current_item_id].to_s, "/items/"+session[:current_item_id].to_s+"/edit") %>
+<p>
+<% end %>
+<%= form_tag elements_path, :method => 'get' do %>
+  
+  <%=render 'layouts/indexintro' %>
+
+<% end %>
+
+<table class="table" align="left">
+<tr>  
+	<th><%= sortable "id" %></th>
+	<th><%= sortable "name" %></th> 
+	<th><%= sortable "author" %></th>    
+	<th><%= sortable "category" %></th>  
+	<th><%= sortable "tags" %></th>
+	<th> </th>
+</tr>
+
+	<% for element in @elements %>
+	    <%= render element %>
+	<% end %>
+
+
+
+</table>
+<%= link_to("New Element", new_element_path) %>
+
+<%= will_paginate %>
+
+<% if session[:current_item_id] %>
+<p>
+<%= link_to("Go to Item "+session[:current_item_id].to_s, "/items/"+session[:current_item_id].to_s+"/edit") %>
+<% end %>
+
+
