@@ -16,15 +16,15 @@
 </h12>
 <br>
 </div>
-</br>
 
 <% @n.times do |i| %>
+	<br>
 	
   <div class = 'outline<%= "#{@divstyle[i]}" %>'  >
 	<% if @text[i] %>
-		<br><h9> <%= @text[i] %></h9>
+		<h9> <%= @text[i] %></h9>
 	<% elsif @image[i] %>
-		<br> <img src = <%= @image[i] %> />
+		<img src = <%= @image[i] %> />
 	<% elsif @video[i] %>
 	<iframe width="600" height="450"
 		src=<%=  @video[i] %>>
@@ -46,8 +46,8 @@
 			</td>
 			</h10>
 			<td> 
-			<% if @feedback[[i,j]] and @feedback[[i,j]] >= 0%>
-				<p align='right'> <img class = 'score_mark' src = <%= case @feedback[[i,j]]; when 0 then asset_path('Tick.png'); when 2 then asset_path('Cross.png'); when 1 then asset_path('Triangle.png');end %> width='40' height='40' /> </p> </td> 
+			<% if @marksymbol[[i,j]] and @marksymbol[[i,j]] >= 0%>
+				<p align='right'> <img class = 'score_mark' src = <%= case @marksymbol[[i,j]]; when 0 then asset_path('Tick.png'); when 2 then asset_path('Cross.png'); when 1 then asset_path('Triangle.png');end %> width='40' height='40' /> </p> </td> 
 			<% end %>
 			
 		</tr>	
@@ -67,25 +67,57 @@
 	<% end %>		
 	</form>
 	</div>
-	<br>
 <% end %>
 
-<% if current_user.author %>
-	<%= form_tag  do %>
-	
-		Allocate this task to groups:
-		<ul>
-		  <% @groups.each do |group| %>
-			  <li>
-		        <%= check_box_tag 'group_ids[]', group.id, @set[group.id] %>
-		        <%= group.name %>
-		        <%= group.tasks %>
-		      </li>
-		  <% end %>
-		</ul>
-		<%=submit_tag "Set it!", name: "assign"%>
-	<% end %>
+<br>
+
+
+<% if @feedback_due %>
+	<div class = 'feedback'>
+		<%=form_tag task_path(anchor: "feedback"), id: "feedback", class: "feedback" do %>
+		
+		<h13>
+			How would you describe your current feelings towards your maths course/this topic?
+			<br>
+			<% feedback_text.keys.count.times do |i| %>
+				<br>
+		  			<%= radio_button("feedback", "grade", i) %> 
+		  			<%=  feedback_text[i] %>
+			<% end %></h13>
+			<br>
+			<br>
+			<h13>How can your progress in this topic/maths in general be improved? (250 Characters max)</h13>
+			<br>
+			<br>
+			<%= text_area_tag 'comment', '', rows: 2, cols: 75 %>
+			<div class = 'right'>
+				<input type="hidden" name="feedback_given" value= true>
+		  	<%= submit_tag "Submit Feedback",  class: "answer_check" %></div>
+		<% end %>
+	</div>
 <% end %>
+
+<br>
+
+<% if current_user.author %>
+	<div class = 'outline'>
+		<%= form_tag  do %>
+		
+			Allocate this task to groups:
+			<ul>
+			  <% @groups.each do |group| %>
+				  <li>
+			        <%= check_box_tag 'group_ids[]', group.id, @set[group.id] %>
+			        <%= group.name %>
+			        <%= group.tasks %>
+			      </li>
+			  <% end %>
+			</ul>
+			<%=submit_tag "Set it!", name: "assign"%>
+		<% end %>
+	</div>
+<% end %>
+<br>
 
 
 

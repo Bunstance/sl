@@ -1,0 +1,34 @@
+<div class = 'title'>
+  <h1>Assign staff to groups</h1>
+</div>
+
+
+<form>
+
+<table>
+  <tr>
+  	<th></th>
+  	<th> &nbsp &nbsp &nbsp </th>
+    <% @n_staff.times do |i| %>
+    <th class="rotate"><div><span><%= @teachers[i].name%></span></div></th>
+    <% end %> 
+  </tr>
+
+<% @groups.each do |group| %>
+  <tr>
+    <td><%= group.name %></td>
+    <td></td>
+    <% @n_staff.times do |i| %>
+      <td><%= check_box_tag "#{i}_owns[]", "#{group.id}", @owns[[group.id,@teachers[i].id.to_s]] %></td>
+    <% end %> 
+  </tr>
+<% end %>
+</table>
+
+<br>
+
+<%= submit_tag "Assign", class: 'reseed', value: "Update", name: "assign" %>
+</form>
+
+
+<%= link_to 'New Group', new_group_path %>

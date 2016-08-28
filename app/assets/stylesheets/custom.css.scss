@@ -166,6 +166,10 @@ h12 {
   color: $teallight;
 }
 
+h13 {
+  font-size: 1.3em;
+}
+
 tag {
   font-family: Trebuchet MS;
   font-weight: bold;
@@ -187,6 +191,7 @@ course {
 small {
   font-size: 1em;
 }
+
 
 p {
   font-family: Bookman Old Style;
@@ -249,6 +254,7 @@ form.question:before {
 }
 
 
+
 /* sidebar */
 
 aside {
@@ -303,11 +309,28 @@ input.ans_field {
   border: none;
 }
 
+
+input.small {
+  font-size: 1em;
+}
+
+input.large {
+  font-size: 1.4em;
+}
+
 input.answer_check {
   font-family: Trebuchet MS;
-  font-size: 1.4em;
   position: relative;
   top: 0.35em;
+  color: $teallight;
+  background-color: $tealvdark;
+  &:hover {
+    color: $pinkish;
+  }
+}
+
+button.teal {
+  font-family: Trebuchet MS;
   color: $teallight;
   background-color: $tealvdark;
   &:hover {
@@ -337,6 +360,7 @@ div.centered {
 
 div.right {
   text-align: right;
+  float: right;
 }
 
 div.title {
@@ -347,10 +371,26 @@ div.title {
   text-align: center;
 }
 
+div.notice {
+  padding: 20px;
+  font-size: 1.6em;
+  color: $pinkish;
+  background-color: $graydark;
+  text-align: left;
+  border: 2px solid $pinkish;
+}
+
   
 div.outline {
     padding: 30px;
   background-color: $grayPale;
+}
+
+div.feedback {
+    padding: 30px;
+  background-color: $teal;
+  font-family: Trebuchet MS;
+  color: $white;
 }
 
 div.info {
@@ -390,6 +430,18 @@ a.good:hover {
   color: $pinkish;
 }
 
+
+.showme{ 
+display: none;
+}
+.showhim:hover .showme{
+display : block;
+}
+
+
+/* tables */
+
+
 td.top {
   font-family: Trebuchet MS;
   font-size: 1.5em;
@@ -407,6 +459,23 @@ td.tail {
   text-align: left;
   padding-left: 12px;
   color: $graydark;
+}
+
+td.small {
+  font-size: 0.72em;
+  text-align: center;
+}
+
+td.f0 {
+  background-color: #bfb
+}
+
+td.f1 {
+  background-color: #ff8
+}
+
+td.f2 {
+  background-color: #fbb
 }
 
 tr.dark {
@@ -429,9 +498,29 @@ tr.bad {
   border-top: 1px solid #000;
 }
 
+th.rotate {
+  /* Something you can count on */
+  height: 140px;
+  white-space: nowrap;
+}
+
+th.rotate > div {
+  transform: 
+    /* Magic Numbers */
+    translate(8px, 51px)
+    /* 45 is really 360 - 45 */
+    rotate(315deg);
+  width: 30px;
+}
+th.rotate > div > span {
+  padding: 3px 3px;
+}
 
 
-/* tables */
+
+.slanty tr {
+  border-bottom: 2px solid #add;
+}
 
 table {
   max-width: 100%;

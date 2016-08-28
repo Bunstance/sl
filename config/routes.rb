@@ -12,6 +12,8 @@ FirstApp::Application.routes.draw do
   post "users/upload"
   
   get "items/reseed"
+  
+  get "groups/assign"
 
   #get "elements/new"
 
@@ -28,6 +30,7 @@ FirstApp::Application.routes.draw do
   resources :profiles
   resources :tasks
   resources :groups
+  resources :feedbacks
 
   root to: "static_pages#home"
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160808121831) do
+ActiveRecord::Schema.define(:version => 20160828152524) do
 
   create_table "Elements", :force => true do |t|
     t.string   "category"
@@ -34,13 +34,24 @@ ActiveRecord::Schema.define(:version => 20160808121831) do
     t.integer  "author",     :default => 1
   end
 
-  create_table "groups", :force => true do |t|
-    t.integer  "teacher"
-    t.text     "tasks"
-    t.text     "scores"
+  create_table "feedbacks", :force => true do |t|
+    t.integer  "grade"
+    t.string   "comment"
+    t.integer  "task_id"
+    t.integer  "user_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "groups", :force => true do |t|
+    t.string   "teacher"
+    t.text     "tasks"
+    t.text     "scores"
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
     t.string   "name"
+    t.text     "notice",       :default => ""
+    t.datetime "feedback_due", :default => '2006-08-28 15:34:55'
   end
 
   add_index "groups", ["name"], :name => "index_groups_on_name"

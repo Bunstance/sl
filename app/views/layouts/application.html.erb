@@ -19,6 +19,17 @@
       <% flash.each do |key, value| %>
         <div class="alert alert-<%= key %>"><%= value %></div>
       <% end %>
+
+      <% if current_user and current_user.group_object and current_user.group_object.notice.length > 0 %>
+
+        <div class = 'notice'>
+          <%= current_user.group_object.notice  %>
+        </div>
+      <%end%>
+
+
+      <br>
+
 	    <%= yield %>
 	    <%= render 'layouts/footer' %>
       <%= debug(params) if Rails.env.development? %>

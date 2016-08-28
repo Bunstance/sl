@@ -8,7 +8,7 @@
   <%= link_to element.name, element %>
   </td>
     <td>
-  <%= User.find_by_id(element.author).name %>
+  <%= User.find_by_id(element.author) ? User.find_by_id(element.author).name : '' %>
   </td>
   <td>
   <%= element.category %>

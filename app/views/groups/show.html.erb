@@ -1,10 +1,88 @@
 <p id="notice"><%= notice %></p>
-<%= @group.name %>
 
-<% @members.each do |member| %>
-    <br><%= member.name %>
-<% end %>
+<div class = 'title'>
+	<%= @group.name %>
+</div>
+
+<br>
+<form >
+
+<div class = 'outline'>
+	Notice text: <br>
+	<%= text_area_tag 'notice_text', @group.notice, size: "75x2"  %>
+	<%= button_tag "Update", class: 'teal' %>
+	<%= button_tag "Clear", class: 'teal', value: '', name: "notice_text" %>
+	<%= button_tag "Ask for feedback", class: 'teal', value: true, name: "get_feedback" %>
+</div>
 
 
-<%= link_to 'Edit', edit_group_path(@group) %> |
-<%= link_to 'Back', groups_path %>
+
+<br>
+
+<div class = 'outline'  >
+
+	<%= will_paginate @tasks%>
+	<table class = "slanty">
+	  <tr>
+	  	<th></th>
+	  	<th> &nbsp &nbsp &nbsp </th>
+	    <% @n_tasks.times do |i| %>
+	    <th class="rotate"><div><span><%= @tasks[i].name%></span></div></th>
+	    <% end %> 
+	  </tr>
+
+	<% @members.each do |member| %>
+	  <tr>
+	  	<td><%= link_to member.name, user_path(member) %></td>
+	  	<td></td>
+
+	    <% @tasks.each do |task| %>
+		    <td class = '<%= "small #{@feedback[member.id][task.id] ? 'f' + @feedback[member.id][task.id].grade.to_s : ''}" %>'><div class="showhim"><%= @scores[member.id][task.id][0] %><div class="showme"><%= @feedback[member.id][task.id] ? @feedback[member.id][task.id].comment : '' %></div></div>
+
+		    <% if @show_resets %><%= @scores[member.id][task.id][1] %></td>
+		    <% end %> 
+	    <% end %> 
+		<% if @recent %>
+		    <td class = '<%= "small f#{@lastgrade[member.id]}" %>'> &nbsp
+		    	<%= @lastcomment[member.id] %>
+		    </td>
+
+	    <% end %> 
+
+
+	  </tr>
+	<% end %>
+	</table>
+
+	<br>
+
+	<form >
+		<% if @recent %>
+			<input type="hidden" name="recent" value= true>
+
+			
+			<%= button_tag "All tasks", class: 'teal', value: false, name: "recent" %>
+		<% else %>
+			
+			<%= button_tag "Recent tasks + comment", class: 'teal', value: true, name: "recent" %>
+
+		<% end %> 
+
+		<% if @show_resets %>
+			<input type="hidden" name="resets" value= true>
+			
+			<%= button_tag "Don't show Resets", class: 'teal', value: false, name: "resets" %>
+		<% else %>
+			
+			<%= button_tag "Show Resets", class: 'teal', value: true, name: "resets" %>
+
+		<% end %> 
+	</form>
+
+
+</div>
+
+
+</form>
+
+

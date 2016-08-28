@@ -1,0 +1,40 @@
+<% provide(:title, "Feedback") %>
+
+<div class = 'title'>
+  <%= Feedback %> <br><br>
+<br>
+
+<h12>
+	
+	Please check your responses before they are permanently stored. There will be more opportunities to make comments throughout the course. Your comments will appear on your home page beside the tasks you were on you made them. There won't be one for every task.
+	
+</h12>
+<br>
+</div>
+
+<br>
+    
+
+
+	<div class = 'feedback'>
+		<%=form_for @feedback do |f|%>
+		
+		<h13>
+			How would you describe your current feelings towards your maths course/this topic?
+			<br>
+			<% feedback_text.keys.count.times do |i| %>
+				<br>
+		  			<%= f.radio_button :grade, i, checked: @feedback.grade.to_i == i %> 
+		  			<%=  feedback_text[i] %>
+			<% end %></h13>
+			<br>
+			<br>
+			<h13>How can your progress in this topic/maths in general be improved? (250 characters max)</h13>
+			<br>
+			<br>
+			<%= f.text_area :comment, rows: 2, cols: 75 %>
+			<div class = 'right'>
+				<input type="hidden" name="task_id" value= <%= @task_id %> >
+		  	<%= f.submit "Confirm this Feedback",  class: "answer_check" %></div>
+		<% end %>
+	</div>

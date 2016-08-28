@@ -85,6 +85,17 @@ class UsersController < ApplicationController
       sign_in @user
       redirect_to current_user
     end
+    @comments = {}
+    @commentcolour = {}
+    feedbacks = Feedback.by(@user.id)
+    feedbacks.each do |f|
+      task_id = f.task_id
+      @comments[task_id] = f.comment
+      @commentcolour[task_id] = colour(f.grade.to_i)
+    end
+
+
+
     @user.update_attribute(:tag, "") unless @user.tag 
     tags=@user.tag.split(' ')
     tags=tags.delete('') if tags.include?('')
@@ -372,6 +383,17 @@ class UsersController < ApplicationController
     def admin_user
       redirect_to(root_path) if current_user==nil
       redirect_to(root_path) unless current_user.admin
+    end
+
+    def colour(grade)
+      case grade
+      when 0
+        "#00ff00"
+      when 1
+        "#ffff00"
+      when 2
+        "#ff0000"
+      end
     end
 
 end

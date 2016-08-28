@@ -3,11 +3,13 @@
 
 <div class = title>
 
-<%= @user.name %>
+Homepage for <%= @user.name %>
 
 <br>
 </div>
 <br>
+
+
 <div class = outline>
 <h11>
 	
@@ -21,6 +23,7 @@
 		<th>Task</th>
 		<th>Status</th>
 		<th>Resets</th>
+		<th> </th>
 	</tr>
 	
 	<% @user.task_list.each do |task| %>
@@ -28,6 +31,7 @@
 		<td><%= link_to task.name, task, class: @task_scores[task.id.to_i][0] == 'Complete' ? 'good' : 'bad'%></td>
 		<td><%= @task_scores[task.id.to_i][0] %></td>
 		<td><%= @task_scores[task.id.to_i][1] %></td>
+		<td> <% if @commentcolour[task.id.to_i] %> <span style= '<%="color: #{@commentcolour[task.id.to_i]}" %>'> &bull; </span> <% end %> <%= @comments[task.id.to_i] %></td>
 	</tr>
 	<% end %>
 </table>

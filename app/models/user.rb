@@ -33,6 +33,8 @@
 
 
 class User < ActiveRecord::Base
+  has_many :feedbacks
+  has_many :tasks, :through => :feedbacks
   include ApplicationHelper
   attr_accessible :email, :forename, :surname ,:seed, :password,:password_confirmation, :tag, :task_data, :group, :name
          #ensures only these columns are acc'ble - don't worry, the p'word ones don't persist.
@@ -74,9 +76,13 @@ class User < ActiveRecord::Base
   def task_scores_hash
     Hash[self.task_scores.collect { |v| [v[0], v[1..-1]] }]
   end
+
+  def group_object
+    Group.find_by_name(self.group)
+  end
   
   def task_list
-    group = Group.find_by_name(self.group)
+    group = self.group_object
     group ? group.task_list : []
   end
   

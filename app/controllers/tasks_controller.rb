@@ -58,6 +58,12 @@ class TasksController < ApplicationController
         recent_answer_string ||= ''
         recent_answer_string = '' if params[:finished]
         recent_answers = decode_string(recent_answer_string)
+
+        if params[:feedback_given]
+            store_location
+            redirect_to new_feedback_path(request.parameters)
+        end
+
         question_attempted = params[:attempted]
         if question_attempted
             answers_given = params["ans#{question_attempted}".to_sym]
@@ -66,7 +72,9 @@ class TasksController < ApplicationController
                 ans_array_insert(recent_answers,[id,question_attempted,j,answers_given[j]])
             end
         end
-
+        
+        @feedback_due = !(Feedback.date_of_last_by(user.id) > [feedback_interval.ago,user.group_object.feedback_due].max or Feedback.where(task_id:@task.id, user_id:user.id).first)
+        
         session[:recent_answers] = encode_string(recent_answers)
         task_data_string = user.task_data || ""
         #task_data_string = ""
@@ -87,7 +95,7 @@ class TasksController < ApplicationController
         @text = {}
         @image = {}
         @video = {}
-        @feedback = {}
+        @marksymbol = {}
         @progress_text = {}
         @top = {}
         @tail = {}
@@ -130,11 +138,11 @@ class TasksController < ApplicationController
                 end
                 result = 1 if  score.max == 1 and score.min >= 0
                 if @grouped_answers
-                    @feedback[[i,m - 1]] = result
+                    @marksymbol[[i,m - 1]] = result
                 else
                     m.times do |j|
-                        @feedback[[i,j]] = score[j]
-                        @feedback[[i,j]] = 2 if score[j] == -1 and result != -1
+                        @marksymbol[[i,j]] = score[j]
+                        @marksymbol[[i,j]] = 2 if score[j] == -1 and result != -1
                     end
                 end
                 

@@ -6,7 +6,7 @@
     <%= link_to question.name, question %>
   </td>
   <td>
-  <%= User.find_by_id(question.author).name %>
+  <%= User.find_by_id(question.author) ? User.find_by_id(question.author).name : '' %>
   </td>
   <td>  
     <i><%= question.text %></i>

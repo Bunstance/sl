@@ -20,6 +20,14 @@ module ApplicationHelper
         direction = (column == sort_column && sort_direction == "desc") ? "asc" : "desc"
         link_to title, {:sort => column, :direction => direction, :page => nil, :content => @content}, {:class => css_class}
     end
+    
+    def feedback_text
+        {0 => "Everything is going well", 1 => "Things are OK, but I know I can do better", 2 => "I feel maths is going badly for me"} 
+    end
+
+    def feedback_interval
+        3.years
+    end
 
     def number_per_page
         15

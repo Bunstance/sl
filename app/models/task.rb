@@ -1,4 +1,6 @@
 class Task < ActiveRecord::Base
+    has_many :feedbacks
+    has_many :users, :through => :feedbacks
     include ApplicationHelper
     
     attr_accessible :content, :name, :tags
