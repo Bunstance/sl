@@ -9,7 +9,8 @@ class Group < ActiveRecord::Base
   end
   
   def task_list
-    self.tasks.split(' ').map{|x| Task.find(x)}
+    tasks = self.tasks || ''
+    tasks.split(' ').map{|x| Task.find(x)}
   end
 
   def task_names
