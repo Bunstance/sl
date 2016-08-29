@@ -35,7 +35,7 @@ module ApplicationHelper
     end
 
     def feedback_interval
-        3.years
+        3.weeks
     end
 
     def number_per_page

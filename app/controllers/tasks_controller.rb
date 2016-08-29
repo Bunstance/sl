@@ -114,8 +114,10 @@ class TasksController < ApplicationController
                 task_data[q + 2] = -1 if task_data[1] < 0
                 question_id = thing[1..-1]
                 @question = Question.find(question_id)
-                seed = @revision_mode ? 10000 : task_data[q + 2]/max_tries + 70*i
-                seed = (-task_data[q + 2] - 1)/max_tries + 1 if seed < 1
+                seed = @revision_mode ? 10000 : task_data[q + 2]/max_tries
+                if seed < 1
+                    seed = (-task_data[q + 2] - 1)/max_tries + 1
+                end
                 construct(seed)
                 @text[i] = @example_question
                 m = @example_answers.count
