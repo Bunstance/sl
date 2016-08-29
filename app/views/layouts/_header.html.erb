@@ -13,7 +13,6 @@
             <li><%= link_to  "Account", edit_user_path(current_user,{:tagedit => 0})%></li>
             <li><%= link_to "Sign out", signout_path, {:method => "delete"} %> </li>
           <% end %>
-          <li><%= link_to "Help", help_path %></li>
           <% if signed_in? %>
 
             <% if current_user.admin %>
@@ -23,8 +22,12 @@
             <% if current_user.author %> 
               <li><%= link_to "Questions", questions_path %></li>
               <li><%= link_to "Elements", elements_path %></li>
-              <li><%= link_to "Items", items_path %></li>
-              <li><%= link_to "Courses", courses_path %></li>
+              <li><%= link_to "Tasks", tasks_path %></li>
+              <li><%= link_to "Groups", groups_path %></li>
+              <% if classic_mode %>
+                <li><%= link_to "Items", items_path %></li>
+                <li><%= link_to "Courses", courses_path %></li>
+              <%end%>
             <% end %>
              
           <% else %>

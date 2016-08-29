@@ -112,7 +112,7 @@ class TasksController < ApplicationController
                 task_data[q + 2] = -1 if task_data[1] < 0
                 question_id = thing[1..-1]
                 @question = Question.find(question_id)
-                seed = @revision_mode ? 100 : task_data[q + 2]/max_tries + 1
+                seed = @revision_mode ? 10000 : task_data[q + 2]/max_tries + 70*i
                 seed = (-task_data[q + 2] - 1)/max_tries + 1 if seed < 1
                 construct(seed)
                 @text[i] = @example_question
@@ -311,9 +311,10 @@ class TasksController < ApplicationController
         end
         @task = Task.new
         @elements = Element.all
-        @questions = Question.search(params[:search],params[:onlyme],current_user.id).order(sort_column + ' ' + sort_direction).paginate(page: params[:qpage]||1, per_page:6)
-        @elements = Element.search(params[:search],params[:onlyme],current_user.id).order(sort_column + ' ' + sort_direction).paginate(page: params[:epage]||1, per_page:6)
+        @questions = Question.search(params[:search],params[:onlyme],current_user.id).order(sort_column + ' ' + sort_direction).paginate(page: params[:qpage]||1, per_page:4)
+        @elements = Element.search(params[:search],params[:onlyme],current_user.id).order(sort_column + ' ' + sort_direction).paginate(page: params[:epage]||1, per_page:4)
         @contents = contents(@content,1)
+        @n_contents = @contents.count
         #@answers = params[:ans] || Hash.new('')
 
     end

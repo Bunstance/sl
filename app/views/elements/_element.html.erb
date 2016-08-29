@@ -17,29 +17,31 @@
   <i><%= element.tags %></i>
   </td>
     <td> 
-  <% if current_user.author? %>
+  <% if @task and current_user.author?%>
+    <% @element=element %>
+    | <%= link_to "Add", params.merge({content: @content, new_thing: "element", new_id: element.id, anchor: "newthing"})%>
+  <% else %>
+    <% if current_user.author? %>
 
-    <%= link_to "edit", edit_element_path(element.id) %>
+      <%= link_to "edit", edit_element_path(element.id) %>
 
-      <% if session[:current_item_id] %>
-     
-      | <%= link_to "add to item "+session[:current_item_id].to_s, :controller => "elements", :action => "add_to_item", :element=>element.id, :search=>params[:search], :sort=>params[:sort], :direction=>params[:direction] %>
-      
-      
+        <% if session[:current_item_id] %>
+       
+        | <%= link_to "add to item "+session[:current_item_id].to_s, :controller => "elements", :action => "add_to_item", :element=>element.id, :search=>params[:search], :sort=>params[:sort], :direction=>params[:direction] %>
+        
+        
+        <% end %>
       <% end %>
+    <% if current_user.admin?||current_user.id==element.author%>
+
+       | <%= link_to "delete", element, method: :delete,
+                                    data: { confirm: "You sure?" } %>
+
     <% end %>
-  <% if current_user.admin?||current_user.id==element.author%>
-
-     | <%= link_to "delete", element, method: :delete,
-                                  data: { confirm: "You sure?" } %>
-
   <% end %>
   
     
-  <% if @task %>
-  	<% @element=element %>
-  	| <%= link_to "add to task #{@task.id}", params.merge({content: @content, new_thing: "element", new_id: element.id})%>
-  <% end %>
+
   </td>
   </tr>
 

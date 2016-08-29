@@ -1,8 +1,13 @@
 
 class StaticPagesController < ApplicationController
   def home
-  	@test = "can you see this?"
-  	@params=params
+
+  	puts "method home called"
+  	if current_user
+  		redirect_to current_user
+  	else
+  		redirect_to signin_path
+  	end
   end
 
   def help

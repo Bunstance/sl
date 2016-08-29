@@ -10,9 +10,9 @@
 <div class = 'outline'>
 	Notice text: <br>
 	<%= text_area_tag 'notice_text', @group.notice, size: "75x2"  %>
-	<%= button_tag "Update", class: 'teal' %>
-	<%= button_tag "Clear", class: 'teal', value: '', name: "notice_text" %>
-	<%= button_tag "Ask for feedback", class: 'teal', value: true, name: "get_feedback" %>
+	<%= button_tag "Update", class: 'teal', title: 'Text from the box above will be displayed to this class at the top of each page.' %>
+	<%= button_tag "Clear", class: 'teal', value: '', name: "notice_text", title: 'Remove the notice for this class' %>
+	<%= button_tag "Ask for feedback", class: 'teal', value: true, name: "get_feedback", title: 'Students will have a feedback opportunity in any task they open.' %>
 </div>
 
 
@@ -33,7 +33,7 @@
 
 	<% @members.each do |member| %>
 	  <tr>
-	  	<td><%= link_to member.name, user_path(member) %></td>
+	  	<td><%= member.name %></td>
 	  	<td></td>
 
 	    <% @tasks.each do |task| %>
@@ -61,20 +61,20 @@
 			<input type="hidden" name="recent" value= true>
 
 			
-			<%= button_tag "All tasks", class: 'teal', value: false, name: "recent" %>
+			<%= button_tag "All tasks", class: 'teal', value: false, name: "recent", title: 'show columns for all tasks, most recent first' %>
 		<% else %>
 			
-			<%= button_tag "Recent tasks + comment", class: 'teal', value: true, name: "recent" %>
+			<%= button_tag "Recent tasks + comment", class: 'teal', value: true, name: "recent", title: 'show only the most recent tasks, plus the most recent feedback comment' %>
 
 		<% end %> 
 
 		<% if @show_resets %>
 			<input type="hidden" name="resets" value= true>
 			
-			<%= button_tag "Don't show Resets", class: 'teal', value: false, name: "resets" %>
+			<%= button_tag "Don't show Resets", class: 'teal', value: false, name: "resets", title: 'hide the resets information' %>
 		<% else %>
 			
-			<%= button_tag "Show Resets", class: 'teal', value: true, name: "resets" %>
+			<%= button_tag "Show Resets", class: 'teal', value: true, name: "resets", title: 'show how many times questions in each task have been reset' %>
 
 		<% end %> 
 	</form>

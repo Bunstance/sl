@@ -14,11 +14,20 @@ module ApplicationHelper
         31.chr
     end
 
-    def sortable(column, title = nil)
+    def classic_mode
+        false
+    end
+
+    def sortable(column, title = nil,anchor = nil)
         title ||= column.titleize
         css_class = (column == sort_column) ? "current #{sort_direction}" : nil
         direction = (column == sort_column && sort_direction == "desc") ? "asc" : "desc"
-        link_to title, {:sort => column, :direction => direction, :page => nil, :content => @content}, {:class => css_class}
+        url_options = {:sort => column, :direction => direction, :page => nil, :content => @content}
+        html_options = {:class => css_class}
+        if anchor
+            url_options[:anchor] = html_options[:id] = anchor
+        end
+        link_to title, url_options, html_options
     end
     
     def feedback_text

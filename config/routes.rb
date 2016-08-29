@@ -1,4 +1,7 @@
 FirstApp::Application.routes.draw do
+
+  root to: "static_pages#home"
+
   get "algorithms/new"
 
   get "registration_confirmations/new"
@@ -32,7 +35,6 @@ FirstApp::Application.routes.draw do
   resources :groups
   resources :feedbacks
 
-  root to: "static_pages#home"
 
   match '/add_element', to: 'elements#add_to_item'
   match '/addquestion', to: 'questions#add_to_item'
