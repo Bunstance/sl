@@ -75,7 +75,7 @@ class TasksController < ApplicationController
 
         group = user.group_object
         
-        @feedback_due = group? !(Feedback.date_of_last_by(user.id) > [feedback_interval.ago,group.feedback_due].max or Feedback.where(task_id:@task.id, user_id:user.id).first) : false
+        @feedback_due = group ? !(Feedback.date_of_last_by(user.id) > [feedback_interval.ago,group.feedback_due].max or Feedback.where(task_id:@task.id, user_id:user.id).first) : false
         
         session[:recent_answers] = encode_string(recent_answers)
         task_data_string = user.task_data || ""
