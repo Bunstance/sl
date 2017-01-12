@@ -246,8 +246,21 @@ class TasksController < ApplicationController
     end
     
     def destroy
-        task = Task.find(params[:id])
+        id = params[:id]
+        task = Task.find(id)
         task.destroy
+        groups = Group.all
+        groups.each do |group|
+            g_id = group.id
+            task_string = group.tasks||''
+            if task_string.split(' ').include?(id.to_s)
+                array = task_string.split(' ')
+                array.delete(id.to_s)
+                task_string = array.join(' ')
+                group.update_attribute(:tasks, task_string)
+            end
+        end
+
         redirect_to tasks_path
     end
     
