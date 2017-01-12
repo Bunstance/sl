@@ -208,7 +208,7 @@ class TasksController < ApplicationController
             end
         end
         
-        if task_data[2..-1].max <= -1 and !@revision_mode
+        if task_data[2] and task_data[2..-1].max <= -1 and !@revision_mode
             @finished = true
             @progress_text.each_key do |key|
                 @progress_text[key] = "Congratulations, this page is complete. All questions will reset for revision mode."
@@ -319,13 +319,14 @@ class TasksController < ApplicationController
         end
         @task = Task.new
         @elements = Element.all
-        @questions = Question.search(params[:search],params[:onlyme],current_user.id).order(sort_column + ' ' + sort_direction).paginate(page: params[:qpage]||1, per_page:4)
-        @elements = Element.search(params[:search],params[:onlyme],current_user.id).order(sort_column + ' ' + sort_direction).paginate(page: params[:epage]||1, per_page:4)
+        @questions = Question.search(params[:search],params[:onlyme],current_user.id).order(sort_column + ' ' + sort_direction).paginate(page: params[:qpage]||1, per_page:10)
+        @elements = Element.search(params[:search],params[:onlyme],current_user.id).order(sort_column + ' ' + sort_direction).paginate(page: params[:epage]||1, per_page:10)
         @contents = contents(@content,1)
         @n_contents = @contents.count
         #@answers = params[:ans] || Hash.new('')
 
     end
+
     
     def create
         @task = Task.new(params[:task])
@@ -342,6 +343,44 @@ class TasksController < ApplicationController
             render 'new'
         end
     end
+
+    def edit
+        @content = params[:content]||""
+        new_id = params[:new_id]
+        case params[:new_thing]
+            when "question" 
+            @content << " Q#{new_id}"
+            when "element" 
+            @content << " #{new_id}"
+        end
+        id = params[:id].to_i
+        @task = Task.find(id)
+        @elements = Element.all
+        @questions = Question.search(params[:search],params[:onlyme],current_user.id).order(sort_column + ' ' + sort_direction).paginate(page: params[:qpage]||1, per_page:10)
+        @elements = Element.search(params[:search],params[:onlyme],current_user.id).order(sort_column + ' ' + sort_direction).paginate(page: params[:epage]||1, per_page:10)
+        
+        @content = params[:content]||@task.content
+        @contents = contents(@content,1)
+        @n_contents = @contents.count || 0
+        #@answers = params[:ans] || Hash.new('')
+
+    end
+    def update
+        @task = Task.find(params[:id])
+        if @task.update_attributes(params[:task])
+            flash.now[:success] = "Task created."
+            redirect_to @task
+        else
+            flash.now[:notice] = "Task NOT created."
+            @elements = Element.all
+            @questions = Question.search(params[:search],params[:onlyme],current_user.id).all.paginate(params[:qpage]||1, 10)
+            @elements = Element.search(params[:search],params[:onlyme],current_user.id).all.paginate(params[:epage]||1, 10)
+            @content = @task.content
+            @contents = contents(@task.content)
+            render 'edit'
+        end
+    end
+
     
     # def show
     #     @user =  current_user
@@ -459,11 +498,11 @@ class TasksController < ApplicationController
     # end
         
     
-    def update
-        @task = Task.find(params[:id])
-        @contents = contents(@task.content,1)
-        @answers = params[:@ans] || Hash.new('')
-    end
+    # def update
+    #     @task = Task.find(params[:id])
+    #     @contents = contents(@task.content,1)
+    #     @answers = params[:@ans] || Hash.new('')
+    # end
         
     # def task_data(user, task_id, question_count, new_data)
     #     #1/0 unless user
