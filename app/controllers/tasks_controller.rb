@@ -202,9 +202,9 @@ class TasksController < ApplicationController
                 q += 1
             else
                 element = Element.find(thing)
-                @text[i] = element.content if element.category == "text"
-                @image[i] = element.content if element.category == "image"
-                @video[i] = element.content if element.category == "video"
+                @text[i] = element.safe_content if element.category == "text"
+                @image[i] = element.safe_content if element.category == "image"
+                @video[i] = element.safe_content if element.category == "video"
             end
         end
         
