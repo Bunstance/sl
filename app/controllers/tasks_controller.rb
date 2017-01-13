@@ -126,7 +126,7 @@ class TasksController < ApplicationController
                 @text[i] = @example_question
                 m = @example_answers.count
                 @parts[i] = m
-                prompts = @promptlist.map {|x| x.split(' ')}
+                prompts = @promptlist.map {|x| x.split('`')}
                 score = []
                 m.times do |j|
                     @top[[i,j]] = prompts[j][0]
