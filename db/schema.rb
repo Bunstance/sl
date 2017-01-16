@@ -13,17 +13,6 @@
 
 ActiveRecord::Schema.define(:version => 20160828152524) do
 
-  create_table "Elements", :force => true do |t|
-    t.string   "category"
-    t.string   "name"
-    t.text     "content"
-    t.text     "tags"
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
-    t.text     "safe_content", :default => ""
-    t.integer  "author",       :default => 1
-  end
-
   create_table "courses", :force => true do |t|
     t.text     "name"
     t.text     "tags"
@@ -32,6 +21,17 @@ ActiveRecord::Schema.define(:version => 20160828152524) do
     t.datetime "updated_at",                   :null => false
     t.text     "tag",        :default => ""
     t.integer  "author",     :default => 1
+  end
+
+  create_table "elements", :force => true do |t|
+    t.string   "category"
+    t.string   "name"
+    t.text     "content"
+    t.text     "tags"
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+    t.text     "safe_content", :default => ""
+    t.integer  "author",       :default => 1
   end
 
   create_table "feedbacks", :force => true do |t|
@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(:version => 20160828152524) do
     t.datetime "updated_at",                                      :null => false
     t.string   "name"
     t.text     "notice",       :default => ""
-    t.datetime "feedback_due", :default => '2006-08-28 15:34:55'
+    t.datetime "feedback_due", :default => '2007-01-16 13:36:23'
   end
 
   add_index "groups", ["name"], :name => "index_groups_on_name"
@@ -86,11 +86,10 @@ ActiveRecord::Schema.define(:version => 20160828152524) do
     t.text     "tags",                            :default => ""
     t.text     "safe_text",                       :default => ""
     t.integer  "author",                          :default => 1
-    t.string   "options",                         :default => ""
-    t.string   "answers_array",                   :default => ""
   end
 
   add_index "questions", ["name"], :name => "index_questions_on_name", :unique => true
+  add_index "questions", ["tags"], :name => "index_questions_on_tags"
 
   create_table "tasks", :force => true do |t|
     t.datetime "created_at",                   :null => false
