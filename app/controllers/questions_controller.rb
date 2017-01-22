@@ -134,6 +134,7 @@ before_filter :author_user
             @question.update_attribute(:author, current_user.id)
         end
         @question.update_attribute(:id,401)
+        puts @question
         if @question.save
             if naughty_text?(@question)
                 flash.now[:failure] ="Question created, but "+@flash_text
