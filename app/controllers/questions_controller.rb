@@ -115,8 +115,7 @@ before_filter :author_user
     def new
         @question = Question.new
         if params[:format]
-            id=Question.last.id + 1
-
+            id=@question.id
             prev_question=Question.find(params[:format])
             @question.name=prev_question.name+' - copy'
             @question.text=prev_question.text
@@ -124,7 +123,7 @@ before_filter :author_user
             @question.tags=prev_question.tags
             @question.answers=prev_question.answers
             @question.precision_regime=prev_question.precision_regime
-            @question.id=401
+            @question.id=id
         end
     end
 
@@ -133,8 +132,6 @@ before_filter :author_user
         if current_user
             @question.update_attribute(:author, current_user.id)
         end
-        @question.update_attribute(:id,401)
-        puts @question
         if @question.save
             if naughty_text?(@question)
                 flash.now[:failure] ="Question created, but "+@flash_text
