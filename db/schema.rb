@@ -51,11 +51,7 @@ ActiveRecord::Schema.define(:version => 20160828152524) do
     t.datetime "updated_at",                                      :null => false
     t.string   "name"
     t.text     "notice",       :default => ""
-<<<<<<< HEAD
     t.datetime "feedback_due", :default => '2007-01-16 13:36:23'
-=======
-    t.datetime "feedback_due", :default => '2007-01-16 13:21:30'
->>>>>>> 100ac03883c7aeab098370799e509b54a8b5476f
   end
 
   add_index "groups", ["name"], :name => "index_groups_on_name"
