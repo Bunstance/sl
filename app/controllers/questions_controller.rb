@@ -115,7 +115,8 @@ before_filter :author_user
     def new
         @question = Question.new
         if params[:format]
-            id=@question.id
+            id=Question.last.id + 1
+
             prev_question=Question.find(params[:format])
             @question.name=prev_question.name+' - copy'
             @question.text=prev_question.text
