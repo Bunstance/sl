@@ -124,7 +124,7 @@ before_filter :author_user
             @question.tags=prev_question.tags
             @question.answers=prev_question.answers
             @question.precision_regime=prev_question.precision_regime
-            @question.id=id
+            @question.id=401
         end
     end
 
