@@ -126,7 +126,7 @@ class TasksController < ApplicationController
                 @text[i] = @example_question
                 m = @example_answers.count
                 @parts[i] = m
-                prompts = @promptlist.map {|x| x.split('`')}
+                prompts = @promptlist.map {|x| x.split(punc1)}
                 score = []
                 m.times do |j|
                     @top[[i,j]] = prompts[j][0]
@@ -290,7 +290,7 @@ class TasksController < ApplicationController
 	            @question = Question.find(thing[1..-1])
 	            construct(fix_to_user)
 	            text = @example_question
-	            prompts = @promptlist.map {|x| x.split('`')}
+	            prompts = @promptlist.map {|x| x.split(punc1)}
 	            tops = prompts.map {|x| x[0]}
 	            tails = prompts.map {|x| x[1]}
 	            answers = @example_answers

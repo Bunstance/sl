@@ -3,7 +3,7 @@
 <%= provide(:title, 'New Question')%> 
 <h1>Please correct the Question</h1>
 
-
+<%= @n_parts %><%= @ans_array %>
 <div class="row">
   <div class="span6 offset3">
     <%= form_for(@question) do |f| %>
@@ -33,6 +33,8 @@
       Answer prompts: <h7><%= @promptlist %></h7><p>
       Answers for example question: <h7><%= @example_answers %></h7>
       <h1><p></h1>
+
+      <%= render "answer_form" %>
 
       <%= f.label :precision_regime, :style => "font-size: 1.7em;"%>  h0 for exact answers only, Otherwise  h/s/r (harsh/soft/rounded) + number of sf.
       <%= f.text_field :precision_regime %>

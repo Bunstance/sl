@@ -1,0 +1,17 @@
+
+
+Answer options </br>
+Number of parts
+
+<%= select_tag "n_parts", options_for_select((1..99).to_a, @n_parts) %>
+<%= submit_tag "Update", name: "change_n_parts", class: "btn btn-large btn-primary" %>
+</br>
+<%= check_box_tag 'grouped', "group the answers", @grouped %> Group the answers 
+<% @n_parts.times do |i| %>
+  top: <%=@ans_array[i][:top]%>
+  answer: <%=@ans_array[i][:answer]%>
+  tail: <%=@ans_array[i][:tail]%>
+<% end %>
+
+
+

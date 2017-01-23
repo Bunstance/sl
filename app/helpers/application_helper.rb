@@ -14,6 +14,46 @@ module ApplicationHelper
         31.chr
     end
 
+    def answer_encode(array,options)
+        array.delete({top:"",tail:"",answer:""})
+        string = array.map {|hash| "["+hash[:top]+punc1+hash[:tail]+"]"+hash[:answer]} .join("")
+        string = "G"+string if options[:grouped]
+        string += "t" if options[:order_matters]
+        return string
+    end
+
+    def answer_decode(string)
+        options = {}
+        if string[0]=="G"
+            options[:grouped]= true
+            string = string [1..-1]
+        end
+        if string[-1]=="t"
+            options[:order_matters] = true
+            string = string[0..-2]
+        end
+        array=[]
+        while string != ""
+            hash = {top:"",tail:"",answer:""}
+            breakpoint = string.index("]")
+            if breakpoint
+                toptail = string[0..breakpoint].split(punc1)
+                hash[:top] = toptail[0][1..-1]
+                hash[:tail] = toptail[1][0..-2]
+                string = string[breakpoint+1 .. -1]
+                endpoint = (string.index("[")||string.length) - 1
+                hash[:answer] = string[0..endpoint]
+                string = string[endpoint+1..-1]
+            end
+            array << hash unless hash == {top:"",tail:"",answer:""}
+        end
+        [options,array]
+    end
+
+
+
+
+
     def classic_mode
         false
     end
@@ -31,7 +71,8 @@ module ApplicationHelper
     end
     
     def feedback_text
-        {0 => "Everything is going well", 1 => "Things are OK, but I know I can do better", 2 => "I feel maths is going badly for me"} 
+        #{0 => "Everything is going well", 1 => "Things are OK, but I know I can do better", 2 => "I feel maths is going badly for me"}
+        {0 => "Everything worked pretty fast and well", 1 => "Not too bad", 2 => "It was annoyingly slow"}  
     end
 
     def feedback_interval
@@ -901,7 +942,7 @@ def users_browser_ie?
                                     answer_given=''
                                 end
                                 if @promptlist[index]
-                                    top_tail=@promptlist[index].split('`')
+                                    top_tail=@promptlist[index].split(punc1)
                                 else
                                     top_tail=[]
                                 end
@@ -972,7 +1013,7 @@ def users_browser_ie?
                                     answer_given=''
                                 end
 
-                                top_tail=@promptlist[index].split('`')
+                                top_tail=@promptlist[index].split(punc1)
                                 if top_tail[0]
                                     top=top_tail[0]
                                 else

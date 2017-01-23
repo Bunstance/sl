@@ -77,7 +77,7 @@
 		<%=form_tag task_path(anchor: "feedback"), id: "feedback", class: "feedback" do %>
 		
 		<h13>
-			How would you describe your current feelings towards your maths course/this topic?
+			After initial login, how would you describe the speed of this site?
 			<br>
 			<% feedback_text.keys.count.times do |i| %>
 				<br>
@@ -86,7 +86,7 @@
 			<% end %></h13>
 			<br>
 			<br>
-			<h13>How can your progress in this topic/maths in general be improved? (250 Characters max)</h13>
+			<h13>Other comments on this interface (250 Characters max)</h13>
 			<br>
 			<br>
 			<%= text_area_tag 'comment', '', rows: 2, cols: 75 %>
