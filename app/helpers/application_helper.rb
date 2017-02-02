@@ -9,6 +9,10 @@ module ApplicationHelper
     def physics_mode
         false
     end
+
+    def https_mode
+        true
+    end
     
     def punc1
         29.chr
@@ -899,6 +903,8 @@ def users_browser_ie?
                     end
 
                     if hint_element.category=="video"
+                        hint_element.safe_content.gsub("http://","https://")
+                        hint_element.safe_content.gsub("https://","http://") unless https_mode
                         hint_html=hint_html+'<a href="'+hint_element.safe_content+'?iframe=true&width=100%&height=100%" rel="prettyPhoto[iframes]" title="Video"><img src="http://i970.photobucket.com/albums/ae189/gumboil/website/Videobutton.png" width="70" alt="Video" /> </a>'
                     end
 
