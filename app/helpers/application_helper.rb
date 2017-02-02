@@ -5,6 +5,10 @@ module ApplicationHelper
     include ActionView
 
     require 'rubystats'
+
+    def physics_mode
+        false
+    end
     
     def punc1
         29.chr
@@ -467,8 +471,8 @@ def users_browser_ie?
             end
         end
         figures=(precision_regime[1..-1]).to_i
-
-        return rounded(x,figures)
+        answer = rounded(x,figures)
+        return physics_mode ? answer : answer.to_f.to_s.gsub(/\.0\z/,"")
         #return x.to_s+figures.to_s
     end
 
