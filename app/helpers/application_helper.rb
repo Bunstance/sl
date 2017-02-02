@@ -3,6 +3,8 @@ module ApplicationHelper
 	include Math
 
     include ActionView
+
+    require 'rubystats'
     
     def punc1
         29.chr
@@ -86,6 +88,16 @@ module ApplicationHelper
 	def ln(x)
 	    return log(x)
 	end
+
+    def ncdf(x)
+        norm = Rubystats::NormalDistribution.new(0, 1)
+        norm.cdf(x)
+    end
+
+    def ninv(x)
+        norm = Rubystats::NormalDistribution.new(0, 1)
+        norm.icdf(x)
+    end
 
 	def lg(x)
 	    return log10(x)
@@ -320,7 +332,7 @@ def users_browser_ie?
 
 
     #deal with functions
-        ['acos','asin','atan','sin','cos','tan','log','exp','ln','lg'].each do |func|
+        ['acos','asin','atan','sin','cos','tan','log','exp','ln','lg','ncdf','ninv'].each do |func|
            # puts func
             if ourexp.match(func+'[^<]')
                 x=1/0

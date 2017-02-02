@@ -6,11 +6,14 @@ Number of parts
 <%= select_tag "n_parts", options_for_select((1..99).to_a, @n_parts) %>
 <%= submit_tag "Update", name: "change_n_parts", class: "btn btn-large btn-primary" %>
 </br>
-<%= check_box_tag 'grouped', "group the answers", @grouped %> Group the answers 
+<%= check_box_tag 'grouped', "group the answers", @grouped_answers %> Group the answers 
+</br>
+<%= check_box_tag 'order_matters', "order matters", @order_matters %> Order Matters 
+</br>
 <% @n_parts.times do |i| %>
-  top: <%=@ans_array[i][:top]%>
-  answer: <%=@ans_array[i][:answer]%>
-  tail: <%=@ans_array[i][:tail]%>
+  top: <%=text_field_tag "tops[]",@ans_array[i][:top]%></br>
+  answer: <%=text_field_tag "answers[]",@ans_array[i][:answer]%></br>
+  tail: <%=text_field_tag "tails[]",@ans_array[i][:tail]%></br>
 <% end %>
 
 

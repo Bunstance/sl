@@ -5,9 +5,41 @@ include ApplicationHelper
 helper_method :sort_column, :sort_direction
 before_filter :author_user
 
+    def question(oldhash)
+        #adapt params[:question][:answers]so as to encode info from params[:answers]
+        # params[:grouped] and params[:order_matters]
+        newhash = oldhash.clone
+        options = {}
+        array = []
+        tops = newhash[:tops]
+        answers = newhash[:answers]
+        tails = newhash[:tails]
+        tops.count.times do |i|
+            element = {}
+            element[:top] = tops[i]
+            element[:answer] = answers[i]
+            element[:tail] = tails[i]
+            array << element
+        end
+        options[:grouped] = true if oldhash[:grouped]
+        options[:order_matters] = true if oldhash[:order_matters]
+        newhash[:question][:answers]=answer_encode(array,options)
+        return newhash
+    end
+
+    def setup
+        @options,@ans_array = answer_decode(@question.answers)
+        @n_parts = (params[:n_parts]|| @ans_array.count).to_i
+        @n_parts = 1 if @n_parts < 1
+        while @n_parts > @ans_array.count
+            @ans_array << {top:"",tail:"",answer:""}
+        end
+    end
+
 
     def show
         @question = Question.find(params[:id])
+        setup
         session[:new_element_id]= "Q"+@question.id.to_s
         begin    
             construct(0)
@@ -34,22 +66,18 @@ before_filter :author_user
     def edit
 
         @question = Question.find(params[:id])
-        @options,@ans_array = answer_decode(@question.answers)
-        @n_parts = params[:n_parts].to_i || @ans_array.count
-        while @n_parts > @ans_array.count
-            @ans_array << {top:"",tail:"",answer:""}
-        end
+        setup
 
         #@question.update_attributes(params[:question])
         construct(0)
 
 
-        if @error
-            render 'edit'
-        else
+        # if @error
+        #     render 'edit'
+        # else
             
-            render 'edit'
-        end
+        #     render 'edit'
+        # end
     end
 
     def destroy
@@ -73,14 +101,15 @@ before_filter :author_user
      
 
             @question = Question.find(params[:id])
+            setup
             #params[:question][:answers].gsub!('`',punc1)
-            if params[:grouped] and params[:question][:answers][0] != "G"
-                params[:question][:answers] = "G" + params[:question][:answers]
-            elsif !params[:grouped] and params[:question][:answers][0] == "G"
-                params[:question][:answers] = params[:question][:answers][1..-1]
-            end
+            # if params[:grouped] and params[:question][:answers][0] != "G"
+            #     params[:question][:answers] = "G" + params[:question][:answers]
+            # elsif !params[:grouped] and params[:question][:answers][0] == "G"
+            #     params[:question][:answers] = params[:question][:answers][1..-1]
+            # end
 
-            if @question.update_attributes(params[:question])
+            if @question.update_attributes(question(params)[:question])
                 if naughty_text?(@question)
                     flash.now[:failure] ="Question update attempted, but "+@flash_text
                     @question.update_attribute(:text, "")
@@ -142,11 +171,14 @@ before_filter :author_user
             @question.answers=prev_question.answers
             @question.precision_regime=prev_question.precision_regime
             @question.id=id
+            setup
         end
+        @n_parts ||= 3
+        @ans_array ||= [{},{},{}]
     end
 
     def create
-        @question = Question.new(params[:question])
+        @question = Question.new(question(params)[:question])
         if current_user
             @question.update_attribute(:author, current_user.id)
         end
