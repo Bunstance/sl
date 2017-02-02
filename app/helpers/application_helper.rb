@@ -41,7 +41,11 @@ module ApplicationHelper
             if breakpoint
                 toptail = string[0..breakpoint].split(punc1)
                 hash[:top] = toptail[0][1..-1]
-                hash[:tail] = toptail[1][0..-2]
+                if toptail[1]
+                    hash[:tail] = toptail[1][0..-2]
+                else
+                    hash[:tail] = ""
+                end
                 string = string[breakpoint+1 .. -1]
                 endpoint = (string.index("[")||string.length) - 1
                 hash[:answer] = string[0..endpoint]
