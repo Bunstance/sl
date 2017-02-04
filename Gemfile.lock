@@ -90,6 +90,11 @@ GEM
       activesupport (= 3.2.22.5)
       bundler (~> 1.0)
       railties (= 3.2.22.5)
+    rails_12factor (0.0.3)
+      rails_serve_static_assets
+      rails_stdout_logging
+    rails_serve_static_assets (0.0.5)
+    rails_stdout_logging (0.0.5)
     railties (3.2.22.5)
       actionpack (= 3.2.22.5)
       activesupport (= 3.2.22.5)
@@ -160,6 +165,7 @@ DEPENDENCIES
   pg (= 0.15.0)
   prettyphoto-rails
   rails
+  rails_12factor
   rspec-rails
   rubystats
   sass-rails (= 3.2.4)
