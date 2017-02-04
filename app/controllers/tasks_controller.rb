@@ -556,7 +556,7 @@ class TasksController < ApplicationController
         end
     
         def sort_column
-            Item.column_names.include?(params[:sort]) ? params[:sort] : "name"
+            Item.column_names.include?(params[:sort]) ? params[:sort] : "id"
         end
     
         def author_user

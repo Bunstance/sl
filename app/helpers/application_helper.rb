@@ -64,6 +64,68 @@ module ApplicationHelper
         [options,array]
     end
 
+    def insert_snippet_values(string)
+        delimcount=string.count('`')
+        if delimcount==0
+            outputstring=string
+        else
+            if delimcount.modulo(2)==1
+                @error=true
+                throw :question_problem, 'ERROR: Invalid question text. ` must occur in pairs.'
+            end
+            outputstring=''
+            unless string[0]=='`'
+                split_pos=string.index('`')
+                outputstring=string[0..(split_pos-1)]
+                string=string[split_pos..-1]
+            end
+            while string.count('`')>0
+                string=string[1..-1]
+                split_pos=string.index('`')
+                formula = string[0..split_pos-1]
+                if formula[-1]=='f'
+                    formula=formula[0..-2]
+                    float=true
+                else
+                    float=false
+                end
+                
+                if @example_param_hash==nil
+                    @error=true
+                    throw :question_problem, "ERROR: No valid parameters defined"
+                end
+
+                @example_param_hash.each {|name,value| formula.gsub!(name,value.to_s)}               
+                if  formula.match(/[A-Z]/)
+                    @error=true
+                    throw :question_problem, "ERROR: Question contains formula with undefined parameter"
+                else
+                    formula_result=calculate(formula,@question.precision_regime)
+                    formula_result=formula_result.to_f if float
+                    outputstring=outputstring+formula_result.to_s
+                    string=string[split_pos+1..-1]
+                    unless string==nil
+                        if string.count('`')>0
+                           split_pos=string.index('`')
+                           outputstring=outputstring+string[0..split_pos-1]
+                           string=string[split_pos..-1]
+                        else outputstring=outputstring+string
+                          string=''
+                        end
+                    else
+                    string=""
+                    end
+                end
+                outputstring.gsub!('+-','-')
+                outputstring.gsub!('-+','-')
+                outputstring.gsub!('++','+')
+                outputstring.gsub!('--','+')
+            end
+            outputstring=outputstring+string
+        end
+        return outputstring
+    end
+
 
 
 
@@ -578,7 +640,7 @@ def users_browser_ie?
                 @promptlist=answers.scan(/\[[^\[\]]*\]/)
                 (0..@promptlist.count-1).each do
                     |index|
-                    @promptlist[index]=@promptlist[index][1..-2]
+                    @promptlist[index]=insert_snippet_values(@promptlist[index][1..-2])
                 end
 
                 answerlist.each do
@@ -618,64 +680,7 @@ def users_browser_ie?
 
         @example_question=catch(:question_problem) do
             question_text=@question.safe_text
-            delimcount=question_text.count('`')
-            if delimcount==0
-                @example_question=question_text
-            else
-                if delimcount.modulo(2)==1
-                    @error=true
-                    throw :question_problem, 'ERROR: Invalid question text. ` must occur in pairs.'
-                end
-                @example_question=''
-                unless question_text[0]=='`'
-                    split_pos=question_text.index('`')
-                    @example_question=question_text[0..(split_pos-1)]
-                    question_text=question_text[split_pos..-1]
-                end
-                while question_text.count('`')>0
-                    question_text=question_text[1..-1]
-                    split_pos=question_text.index('`')
-                    formula = question_text[0..split_pos-1]
-                    if formula[-1]=='f'
-                        formula=formula[0..-2]
-                        float=true
-                    else
-                        float=false
-                    end
-                    
-                    if @example_param_hash==nil
-                        @error=true
-                        throw :question_problem, "ERROR: No valid parameters defined"
-                    end
-
-                    @example_param_hash.each {|name,value| formula.gsub!(name,value.to_s)}               
-                    if  formula.match(/[A-Z]/)
-                        @error=true
-                        throw :question_problem, "ERROR: Question contains formula with undefined parameter"
-                    else
-                        formula_result=calculate(formula,@question.precision_regime)
-                        formula_result=formula_result.to_f if float
-                        @example_question=@example_question+formula_result.to_s
-                        question_text=question_text[split_pos+1..-1]
-                        unless question_text==nil
-                            if question_text.count('`')>0
-                               split_pos=question_text.index('`')
-                               @example_question=@example_question+question_text[0..split_pos-1]
-                               question_text=question_text[split_pos..-1]
-                            else @example_question=@example_question+question_text
-                              question_text=''
-                            end
-                        else
-                        question_text=""
-                        end
-                    end
-                    @example_question.gsub!('+-','-')
-                    @example_question.gsub!('-+','-')
-                    @example_question.gsub!('++','+')
-                    @example_question.gsub!('--','+')
-                end
-                @example_question=@example_question+question_text
-            end
+            @example_question = insert_snippet_values(question_text)
         end
             
         return [@question.text, @param_hash.to_s, @example_param_hash.to_s, @paramtext, @example_answers, @example_question,@error,@promptlist,@grouped_answers]
