@@ -84,6 +84,7 @@ class UsersController < ApplicationController
       session.delete(:recent_answers)
       sign_in @user
       redirect_to current_user
+      flash[:success] = "You have changed your random seed. Numbers in questions will be changed."
     end
     @comments = {}
     @commentcolour = {}

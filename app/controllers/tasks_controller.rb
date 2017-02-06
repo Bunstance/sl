@@ -59,6 +59,15 @@ class TasksController < ApplicationController
         recent_answer_string = '' if params[:finished]
         recent_answers = decode_string(recent_answer_string)
 
+        if params[:reseed]
+          @user = user
+          @user.reseed
+          session.delete(:recent_answers)
+          sign_in @user
+          redirect_to task_path
+          flash[:success] = "You have changed your random seed. Numbers in questions will be changed."
+        end
+
         if params[:feedback_given]
             store_location
             redirect_to new_feedback_path(request.parameters)

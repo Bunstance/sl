@@ -71,6 +71,18 @@
 
 <br>
 
+<div class = 'outline'>
+<h11>
+<form>
+You can change your random number seed by clicking the button (right).<br>
+This will change the numbers in all questions throughout the site, but <br>
+the system will remember which questions you have correctly answered.
+<%= submit_tag "Change", class: 'reseed', value: "Change my Numbers", name: "reseed" %>
+</form>
+</h11>
+</div>
+
+<br>
 
 <% if @feedback_due %>
 	<div class = 'feedback'>
