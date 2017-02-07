@@ -148,7 +148,8 @@ module ApplicationHelper
     
     def feedback_text
         #{0 => "Everything is going well", 1 => "Things are OK, but I know I can do better", 2 => "I feel maths is going badly for me"}
-        {0 => "Everything worked pretty fast and well", 1 => "Not too bad", 2 => "It was annoyingly slow"}  
+        #{0 => "Everything worked pretty fast and well", 1 => "Not too bad", 2 => "It was annoyingly slow"}  
+    end {0 => "Better than MyMaths", 1 => "About the same as MyMaths", 2 => "I prefer MyMaths"}  
     end
 
     def feedback_interval
