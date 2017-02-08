@@ -116,7 +116,7 @@ class UsersController < ApplicationController
     @authorhtml=''
 
     if @author
-      @groups = Group.where(:teacher == @user.id)
+      @groups = Group.where(:teacher == @user.id).all
       @authorcourses=Course.find(:all, :order => :name).find_all {|course| course.tag.match('_'+@author.id.to_s+'`')}
       #@authorusers=User.find(:all, :order => :name).find_all {|user| user.tag.match(Regexp::new('_'+@author.id.to_s+'(\z| )'))}
       
