@@ -47,12 +47,13 @@ the system will remember which questions you have correctly answered.
 </form>
 </h11>
 </div>
-<%= @groups.to_s %>
+<% if @groups%>
+	<%= @groups.to_s %>
 
-<% @groups.each do |group| %>
-<%= link_to group_path %>
+	<% @groups.each do |group| %>
+		<%= link_to group_path %>
+	<% end %>
 <% end %>
-
 
 <%= @authorhtml.html_safe %>
 
