@@ -48,10 +48,11 @@ the system will remember which questions you have correctly answered.
 </h11>
 </div>
 <% if @groups%>
-	<%= @groups.to_s %>
+	</br>
+	My Groups </br>
 
 	<% @groups.each do |group| %>
-		<%= link_to "Group #{group.id}", group_path(group.id) %>
+		<%= link_to "#{group.name}", group_path(group.id) %></br>
 	<% end %>
 <% end %>
 
