@@ -41,4 +41,6 @@ FirstApp::Application.configure do
 
   config.action_mailer.default_url_options = { :host => "edex-course-childeroland.c9users.io" }
 
+  config.eager_load = false
+
 end

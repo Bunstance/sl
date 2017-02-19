@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-	include Math
+    include Math
 
     include ActionView
 
@@ -160,9 +160,9 @@ module ApplicationHelper
         15
     end
 
-	def ln(x)
-	    return log(x)
-	end
+    def ln(x)
+        return log(x)
+    end
 
     def ncdf(x)
         norm = Rubystats::NormalDistribution.new(0, 1)
@@ -174,33 +174,33 @@ module ApplicationHelper
         norm.icdf(x)
     end
 
-	def lg(x)
-	    return log10(x)
-	end
+    def lg(x)
+        return log10(x)
+    end
 
-	def number(string)  
-	    string=string.delete ' '
-	    sign=1
-	    if  string[0]=='_' then                 # we will be using '_' for unary minus.
-	        sign=-1
-	        string=string[1..-1]
-	    end
-	    unless string.match(/\./) 
-	        return '<'+(string.to_r*sign).to_s+'>'
-	    else
-	        int_frac=string.split('.')
-	        int=int_frac[0]
-	        frac=int_frac[1]
-	        if frac==''
-	            return '<'+(int.to_r*sign).to_s+'>'
-	        else
-	            frac=frac.to_r/10**frac.length
-	            return '<'+((int.to_r+frac)*sign).to_s+'>'
-	        end
-	    end
-	end
+    def number(string)  
+        string=string.delete ' '
+        sign=1
+        if  string[0]=='_' then                 # we will be using '_' for unary minus.
+            sign=-1
+            string=string[1..-1]
+        end
+        unless string.match(/\./) 
+            return '<'+(string.to_r*sign).to_s+'>'
+        else
+            int_frac=string.split('.')
+            int=int_frac[0]
+            frac=int_frac[1]
+            if frac==''
+                return '<'+(int.to_r*sign).to_s+'>'
+            else
+                frac=frac.to_r/10**frac.length
+                return '<'+((int.to_r+frac)*sign).to_s+'>'
+            end
+        end
+    end
 
-	def prepare(input)
+    def prepare(input)
         ourexp=input
 
         #This is a one-time process of tidying up the input string prior to simplification.
@@ -320,15 +320,15 @@ def users_browser_ie?
    end
 
 
-	# Returns the full title on a per page basis
-	def full_title(page_title)
-		base_title="StemLoops"
-		if page_title.empty?
-			base_title
-		else
-			base_title+" | "+page_title
-		end
-	end
+    # Returns the full title on a per page basis
+    def full_title(page_title)
+        base_title="StemLoops"
+        if page_title.empty?
+            base_title
+        else
+            base_title+" | "+page_title
+        end
+    end
 
     def evaluate(input) #input assumed to be a string. 
                         #Output will be a rational, by coercion if necessary

@@ -599,6 +599,32 @@ table {
         vertical-align: middle;
 }
 
+
+
+table.t {
+  font-family: verdana,arial,sans-serif;
+  font-size:20px;
+  color:#555555;
+  border-width: 10px;
+  border-color: #888888;
+  border-collapse: collapse;
+}
+table.t th {
+  border-width: 5px;
+  padding: 10px;
+  border-style: solid;
+  border-color: #777777;
+  background-color: #badcfe;
+}
+table.t td {
+  border-width: 5px;
+  padding: 10px;
+  border-style: solid;
+  border-color: #335555;
+  background-color: #bbdddd;
+  text-align: center;
+}
+
 /* miscellaneous */
 
 .debug_dump {

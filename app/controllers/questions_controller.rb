@@ -110,14 +110,15 @@ before_filter :author_user
             # end
 
             if @question.update_attributes(question(params)[:question])
-                if naughty_text?(@question)
-                    flash.now[:failure] ="Question update attempted, but "+@flash_text
-                    @question.update_attribute(:text, "")
-                    @question.update_attribute(:safe_text, "")
-                    render "edit"
-                else
+                # if naughty_text?(@question)
+                #     flash.now[:failure] ="Question update attempted, but "+@flash_text
+                #     @question.update_attribute(:text, "")
+                #     @question.update_attribute(:safe_text, "")
+                #     render "edit"
+                # else
                     
-                    @question.update_attribute(:safe_text, @question.text)
+                    @question.update_attribute(:safe_text, ActionController::Base.helpers.sanitize(@question.text))
+                    @question.update_attribute(:text, ActionController::Base.helpers.sanitize(@question.text))
                     begin    
                         construct(0)
                     rescue
@@ -134,7 +135,7 @@ before_filter :author_user
                         
                         end
                     end    
-                end
+                # end
                 
             else
                 flash.now[:failure] = "There was a problem with this question"
@@ -183,16 +184,17 @@ before_filter :author_user
             @question.update_attribute(:author, current_user.id)
         end
         if @question.save
-            if naughty_text?(@question)
-                flash.now[:failure] ="Question created, but "+@flash_text
-                @question.update_attribute(:text, "")
-                @question.update_attribute(:safe_text, "")
-                render "edit"
-            else
+            # if naughty_text?(@question)
+            #     flash.now[:failure] ="Question created, but "+@flash_text
+            #     @question.update_attribute(:text, "")
+            #     @question.update_attribute(:safe_text, "")
+            #     render "edit"
+            # else
                 flash.now[:success] = "question created."
-                @question.update_attribute(:safe_text, @question.text) 
+                @question.update_attribute(:safe_text, ActionController::Base.helpers.sanitize(@question.text)) 
+                @question.update_attribute(:text, ActionController::Base.helpers.sanitize(@question.text)) 
                 redirect_to @question
-            end
+            # end
         else
             render 'new'
         end

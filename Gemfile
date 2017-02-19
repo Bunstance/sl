@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.2.4'
 
-gem 'rails'
+gem 'rails','3.2.11'
 gem 'bootstrap-sass', '2.0.0'
 gem 'bcrypt'
 gem 'bcrypt-ruby', '~> 3.0.0'
@@ -22,9 +22,9 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass', '3.2.19'  
-  gem 'sass-rails',   '3.2.4'
-  gem 'coffee-rails', '3.2.2'
+  gem 'sass' 
+  gem 'sass-rails'
+  gem 'coffee-rails'
   gem 'uglifier', '1.2.3'
 end
 

@@ -36,18 +36,18 @@ FirstApp::Application.routes.draw do
   resources :feedbacks
 
 
-  match '/add_element', to: 'elements#add_to_item'
-  match '/addquestion', to: 'questions#add_to_item'
-  match '/newstage', to: 'courses#add_stage'
-  match '/confirm_password', to: 'password_resets#confirm_password'
+  match '/add_element', to: 'elements#add_to_item', via: [:get, :post]
+  match '/addquestion', to: 'questions#add_to_item', via: [:get, :post]
+  match '/newstage', to: 'courses#add_stage', via: [:get, :post]
+  match '/confirm_password', to: 'password_resets#confirm_password', via: [:get, :post]
 
-  match '/signup',  to: 'users#new'
-  match '/signin',  to: 'sessions#new'
+  match '/signup',  to: 'users#new', via: [:get, :post]
+  match '/signin',  to: 'sessions#new', via: [:get, :post]
   match '/signout', to: 'sessions#destroy', via: :delete
-  match '/help', to: 'static_pages#help'
-  match '/about', to: 'static_pages#about'
-  match '/contact', to: 'static_pages#contact'
-  match '/courseitem', to: 'profiles#show_item'
+  match '/help', to: 'static_pages#help', via: [:get]
+  match '/about', to: 'static_pages#about', via: [:get]
+  match '/contact', to: 'static_pages#contact', via: [:get]
+  match '/courseitem', to: 'profiles#show_item', via: [:get]
   match '/tasks/:id', to: 'tasks#show', via: :post
   #match '/addquestion', to: 'questions#new'
 
