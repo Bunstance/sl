@@ -22,7 +22,7 @@
 	
   <div class = 'outline<%= "#{@divstyle[i]}" %>'  >
 	<% if @text[i] %>
-		<h9> <%= @text[i] %></h9>
+		<h9> <%= @text[i].html_safe %></h9>
 	<% elsif @image[i] %>
 		<img src = <%= @image[i] %> />
 	<% elsif @video[i] %>

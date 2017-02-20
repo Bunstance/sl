@@ -12,7 +12,7 @@ Content so far:
 	<% end %>
 
 	<% if thing[:question] %>
-		<br><h9><%= thing[:text] %></h9>
+		<br><h9><%= thing[:text].html_safe %></h9>
 		<table>
 		<% (0..thing[:tops].count - 1).each do |i|%>
 		<tr><h10>
