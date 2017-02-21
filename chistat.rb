@@ -12,12 +12,13 @@
 
     def pearson(array1,array2)
     	n = array1.count
-    	sx = array1.inject(0,:+)
-    	sy = array1.inject(0,:+)
-    	sxx = array1.map {|x| x*x}.inject(0,:+) - (sx*sx).to_f/n
-    	syy = array2.map {|y| y*y}.inject(0,:+) - (sy*sy).to_f/n
-    	sxy = array1.zip(array2).map {|pair| pair[0]*pair[1]}.inject(0,:+) - (sx*sy).to_f/n
-    	return (sxy/(sxx*syy)**0.5).to_r
+    	sx = array1.inject(0,:+).to_f
+    	sy = array2.inject(0,:+).to_f
+    	sxx = array1.map {|x| x.to_f*x}.inject(0,:+) - (sx*sx)/n
+    	syy = array2.map {|y| y.to_f*y}.inject(0,:+) - (sy*sy)/n
+    	sxy = array1.zip(array2).map {|pair| pair[0]*pair[1]}.inject(0,:+).to_f - (sx*sy)/n
+    	puts "sx #{sx} sy #{sy} sxx #{sxx} syy #{syy} sxy #{sxy} n #{n}"    	
+    	return (sxy/((sxx*syy)**0.5)).to_r
     end
 
     def pmcc(string)
@@ -103,5 +104,5 @@
 puts spearman("<20/1>,<20/1>,<13/1>|<10/1>,<19/1>,<18/1>").to_f
 puts pmcc("<5/2>,<5/2/1>,<1/1>|<1/1>,<3/1>,<2/1>").to_f
 puts pearson([2.5, 1.0, 2.5] , [1.0, 2.0, 3.0])
-puts pearson([25, 10, 25] , [10, 20, 30])
+puts pearson([27,15,19,17,31,13,17,21] , [51,35,38,29,62,29,18,39]).to_f
 
