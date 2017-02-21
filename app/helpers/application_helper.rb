@@ -522,7 +522,7 @@ def users_browser_ie?
 
 
     #deal with mulit-var functions
-        ['plus','chicrit','chistat','chiexp','pmcc','spearman'].each do |func|
+        ['plus','chicrit','chistat','chiexp','pmcc','spearman','pmcccrit'].each do |func|
             reg = Regexp.new('('+func+'{[^}]*})')
             parts = ourexp.split reg
             puts "#{parts}"
