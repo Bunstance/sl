@@ -1,5 +1,55 @@
-    def arglist(string)
+ 	
+    require 'gsl'
+
+def arglist(string)
         return string.split(/<(\d+\/\d+)>/)-['']
+    end
+
+    def tableise(string)
+        list = arglist(string)
+        rows = list.join('').split('|')
+        return rows.map {|x| x.split(',').map {|y| y.to_i}}
+    end
+
+
+    def gsl_pearson(array1,array2)
+    	puts "#{array1}    #{array2}"
+      GSL::Stats::correlation(
+        GSL::Vector.alloc(array1),GSL::Vector.alloc(array2)
+      )
+    end
+
+    def pmcc(string)
+        table = tableise(string)
+        return gsl_pearson(table[0],table[1])
+    end
+
+    def spearman(string)
+        table = tableise(string)
+        pairs = table[0].zip(table[1])
+        n = pairs.count
+        2.times do |i|
+	        pairs.sort! {|a,b| a[i] <=> b[i]}
+	        j = 0
+	        while j < n
+		        value = pairs[j][i]
+		        k = j
+		        while pairs[k] and pairs[k][i] == value
+		        	k += 1
+		        end
+		        m = k - j
+		        tiedrank = j + (m+1).to_r/2
+		        m.times do |k|
+		        	pairs[j + k][i] = tiedrank
+		        end
+		        j += m
+		    end
+		end
+		a,b = [0,1].map {|x| pairs.map {|y| y[x]}}
+		puts "#{a}  #{b}"
+		return gsl_pearson(a,b)
+
+
     end
 
     def chiexpected(table,pos = nil)
@@ -18,9 +68,7 @@
 
 
     def chistat(string)
-        list = arglist(string)
-        rows = list.join('').split('|')
-        table = rows.map {|x| x.split(',').map {|y| y.to_i}}
+        table = tableise(string)
         n_rows = table.count
         n_cols = table[0].count
         expected = chiexpected(table)
@@ -51,5 +99,8 @@
 
 
 
-puts chiexp("<1/1>,<1/1>,<1/1>,<2/1>|<3/1>,<4/1>")
+puts spearman("<20/1>,<20/1>,<13/1>|<10/1>,<19/1>,<18/1>").to_f
+puts pmcc("<5/2>,<5/2/1>,<1/1>|<1/1>,<3/1>,<2/1>").to_f
+puts gsl_pearson([2.5, 1.0, 2.5] , [1.0, 2.0, 3.0])
+puts gsl_pearson([25, 10, 25] , [10, 20, 30])
 
