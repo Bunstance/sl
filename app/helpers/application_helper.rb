@@ -175,12 +175,12 @@ module ApplicationHelper
 
     def pearson(array1,array2)
         n = array1.count
-        sx = array1.inject(0,:+)
-        sy = array1.inject(0,:+)
-        sxx = array1.map {|x| x*x}.inject(0,:+) - (sx*sx).to_f/n
-        syy = array2.map {|y| y*y}.inject(0,:+) - (sy*sy).to_f/n
-        sxy = array1.zip(array2).map {|pair| pair[0]*pair[1]}.inject(0,:+) - (sx*sy).to_f/n
-        return (sxy/(sxx*syy)**0.5).to_r
+        sx = array1.inject(0,:+).to_f
+        sy = array2.inject(0,:+).to_f
+        sxx = array1.map {|x| x.to_f*x}.inject(0,:+) - (sx*sx)/n
+        syy = array2.map {|y| y.to_f*y}.inject(0,:+) - (sy*sy)/n
+        sxy = array1.zip(array2).map {|pair| pair[0]*pair[1]}.inject(0,:+).to_f - (sx*sy)/n 
+        return (sxy/((sxx*syy)**0.5)).to_r
     end
 
     def pmcc(string)

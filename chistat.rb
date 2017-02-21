@@ -16,8 +16,7 @@
     	sy = array2.inject(0,:+).to_f
     	sxx = array1.map {|x| x.to_f*x}.inject(0,:+) - (sx*sx)/n
     	syy = array2.map {|y| y.to_f*y}.inject(0,:+) - (sy*sy)/n
-    	sxy = array1.zip(array2).map {|pair| pair[0]*pair[1]}.inject(0,:+).to_f - (sx*sy)/n
-    	puts "sx #{sx} sy #{sy} sxx #{sxx} syy #{syy} sxy #{sxy} n #{n}"    	
+    	sxy = array1.zip(array2).map {|pair| pair[0]*pair[1]}.inject(0,:+).to_f - (sx*sy)/n	
     	return (sxy/((sxx*syy)**0.5)).to_r
     end
 
