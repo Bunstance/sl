@@ -1,7 +1,5 @@
- 	
-    require 'gsl'
 
-def arglist(string)
+	def arglist(string)
         return string.split(/<(\d+\/\d+)>/)-['']
     end
 
@@ -12,16 +10,19 @@ def arglist(string)
     end
 
 
-    def gsl_pearson(array1,array2)
-    	puts "#{array1}    #{array2}"
-      GSL::Stats::correlation(
-        GSL::Vector.alloc(array1),GSL::Vector.alloc(array2)
-      )
+    def pearson(array1,array2)
+    	n = array1.count
+    	sx = array1.inject(0,:+)
+    	sy = array1.inject(0,:+)
+    	sxx = array1.map {|x| x*x}.inject(0,:+) - (sx*sx).to_f/n
+    	syy = array2.map {|y| y*y}.inject(0,:+) - (sy*sy).to_f/n
+    	sxy = array1.zip(array2).map {|pair| pair[0]*pair[1]}.inject(0,:+) - (sx*sy).to_f/n
+    	return (sxy/(sxx*syy)**0.5).to_r
     end
 
     def pmcc(string)
         table = tableise(string)
-        return gsl_pearson(table[0],table[1])
+        return pearson(table[0],table[1])
     end
 
     def spearman(string)
@@ -47,7 +48,7 @@ def arglist(string)
 		end
 		a,b = [0,1].map {|x| pairs.map {|y| y[x]}}
 		puts "#{a}  #{b}"
-		return gsl_pearson(a,b)
+		return pearson(a,b)
 
 
     end
@@ -101,6 +102,6 @@ def arglist(string)
 
 puts spearman("<20/1>,<20/1>,<13/1>|<10/1>,<19/1>,<18/1>").to_f
 puts pmcc("<5/2>,<5/2/1>,<1/1>|<1/1>,<3/1>,<2/1>").to_f
-puts gsl_pearson([2.5, 1.0, 2.5] , [1.0, 2.0, 3.0])
-puts gsl_pearson([25, 10, 25] , [10, 20, 30])
+puts pearson([2.5, 1.0, 2.5] , [1.0, 2.0, 3.0])
+puts pearson([25, 10, 25] , [10, 20, 30])
 

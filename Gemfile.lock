@@ -51,7 +51,6 @@ GEM
     execjs (2.7.0)
     faker (1.0.1)
       i18n (~> 0.4)
-    gsl (2.1.0.2)
     hike (1.2.3)
     i18n (0.8.0)
     journey (1.0.4)
@@ -161,7 +160,6 @@ DEPENDENCIES
   bootstrap-will_paginate (= 0.0.6)
   coffee-rails
   faker (= 1.0.1)
-  gsl
   jquery-rails (= 2.3.0)
   jquery-ui-rails
   mathjax-rails
