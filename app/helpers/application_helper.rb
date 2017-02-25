@@ -6,8 +6,13 @@ module ApplicationHelper
 
     require 'rubystats'
 
-    multifunc = ['plus','chicrit','chistat','chiexp','pmcc','spearman','pmcccrit','spearmancrit','mwstat','mwcrit','kwstat']
-    singlefunc = ['acos','asin','atan','sin','cos','tan','log','exp','ln','lg','ncdf','ninv']
+    def multifunc 
+        ['plus','chicrit','chistat','chiexp','pmcc','spearman','pmcccrit','spearmancrit','mwstat','mwcrit','kwstat']
+    end
+
+    def singlefunc
+        ['acos','asin','atan','sin','cos','tan','log','exp','ln','lg','ncdf','ninv']
+    end
 
 
     def physics_mode
