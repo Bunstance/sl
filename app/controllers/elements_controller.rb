@@ -64,23 +64,54 @@ class ElementsController < ApplicationController
 
     def create
         @element = Element.new(params[:element])
-        if current_user
-            @element.update_attribute(:author, current_user.id)
-        end
-        if @element.save
-            
-            if naughty_content?(@element)
-                flash.now[:failure] ="Element created, but "+@flash_text
-                @element.update_attribute(:content, "")
-                @element.update_attribute(:safe_content, "")
-                render "edit"
-            else
-                flash.now[:success] = "element created."
-                @element.update_attribute(:safe_content, @element.content) 
-                redirect_to @element
+        tags = @element.tags
+        if params["htmlstring"]
+            oldcode = ""
+            t = params["htmlstring"].split("u003c")
+
+            t.each do |u|
+                v = u.split(/video_id=([^\\]+)/)
+                tycode = v[1]
+                if tycode and tycode != oldcode
+                    oldcode = tycode
+                    title = v[2].split('\\')[-1][5..-1]
+                    nam = title
+                    i = 1
+                    until !Element.find_by_name(nam)
+                        nam = title + "(#{i})"
+                        i += 1
+                    end
+                    @el = Element.new
+                    @el.update_attribute(:name , nam)
+                    @el.update_attribute(:tags , tags)
+                    @el.update_attribute(:category , "video")
+                    @el.update_attribute(:content , "https://www.youtube.com/embed/" + tycode + "?rel=0")
+                    @el.update_attribute(:author, current_user.id) if current_user
+                    @el.save
+
+
+                end
             end
+            redirect_to action: "index"
         else
-            render 'new'
+            if current_user
+                @element.update_attribute(:author, current_user.id)
+            end
+            if @element.save
+                
+                if naughty_content?(@element)
+                    flash.now[:failure] ="Element created, but "+@flash_text
+                    @element.update_attribute(:content, "")
+                    @element.update_attribute(:safe_content, "")
+                    render "edit"
+                else
+                    flash.now[:success] = "element created."
+                    @element.update_attribute(:safe_content, @element.content) 
+                    redirect_to @element
+                end
+            else
+                render 'new'
+            end
         end
     end
 

@@ -94,51 +94,56 @@ before_filter :author_user
 
     def update
         #@testtext=calculate('-2-1/(2-4*(2+ln(2)))')
-        if params[:change_n_parts]
-            redirect_to edit_question_path(params)
-        else
-    
-     
 
-            @question = Question.find(params[:id])
-            setup
-            #params[:question][:answers].gsub!('`',punc1)
-            # if params[:grouped] and params[:question][:answers][0] != "G"
-            #     params[:question][:answers] = "G" + params[:question][:answers]
-            # elsif !params[:grouped] and params[:question][:answers][0] == "G"
-            #     params[:question][:answers] = params[:question][:answers][1..-1]
-            # end
+ 
 
-            if @question.update_attributes(question(params)[:question])
-                # if naughty_text?(@question)
-                #     flash.now[:failure] ="Question update attempted, but "+@flash_text
-                #     @question.update_attribute(:text, "")
-                #     @question.update_attribute(:safe_text, "")
-                #     render "edit"
-                # else
-                    
-                    @question.update_attribute(:safe_text, ActionController::Base.helpers.sanitize(@question.text))
-                    @question.update_attribute(:text, ActionController::Base.helpers.sanitize(@question.text))
-                    begin    
-                        construct(0)
-                    rescue
-                        flash.now[:warning] = "There was a problem with this question. Please review and update it."
-                        #@question.destroy
-                        render 'edit'
-                    else
-                        if @error
-                            flash.now[:failure] = "There was a problem with this question"
-                            render 'edit'
-                        else
-                            flash.now[:success] = "The website could not detect a problem with this question. But what does a website know? Please check thoroughly and refresh the page if appropriate to explore the effect of different parameter choices."
-                            render 'show'
-                        
-                        end
-                    end    
-                # end
+        @question = Question.find(params[:id])
+        setup
+        #params[:question][:answers].gsub!('`',punc1)
+        # if params[:grouped] and params[:question][:answers][0] != "G"
+        #     params[:question][:answers] = "G" + params[:question][:answers]
+        # elsif !params[:grouped] and params[:question][:answers][0] == "G"
+        #     params[:question][:answers] = params[:question][:answers][1..-1]
+        # end
+
+        if @question.update_attributes(question(params)[:question])
+            # if naughty_text?(@question)
+            #     flash.now[:failure] ="Question update attempted, but "+@flash_text
+            #     @question.update_attribute(:text, "")
+            #     @question.update_attribute(:safe_text, "")
+            #     render "edit"
+            # else
                 
+            @question.update_attribute(:safe_text, ActionController::Base.helpers.sanitize(@question.text))
+            @question.update_attribute(:text, ActionController::Base.helpers.sanitize(@question.text))
+            begin    
+                construct(0)
+            rescue
+                flash.now[:warning] = "There was a problem with this question. Please review and update it."
+                #@question.destroy
+                render 'edit'
             else
-                flash.now[:failure] = "There was a problem with this question"
+                if @error
+                    flash.now[:failure] = "There was a problem with this question"
+                    render 'edit'            
+                elsif params[:change_n_parts]
+                    redirect_to edit_question_path(:n_parts => params[:n_parts])
+
+                else
+                    flash.now[:success] = "The website could not detect a problem with this question. But what does a website know? Please check thoroughly and refresh the page if appropriate to explore the effect of different parameter choices."
+                    render 'show'
+                
+                end
+            end   
+
+
+            # end
+            
+        else
+            flash.now[:failure] = "There was a problem even trying to store this question"
+            if params[:change_n_parts]
+                    redirect_to edit_question_path(:n_parts => params[:n_parts])
+            else
                 render 'edit'
             end
         end

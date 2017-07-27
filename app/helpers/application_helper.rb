@@ -162,7 +162,7 @@ module ApplicationHelper
     end
 
     def feedback_interval
-        3.weeks
+        3.years
     end
 
     def number_per_page
@@ -725,8 +725,8 @@ def users_browser_ie?
         if precision_regime[0].downcase=="w" then return string
         end
     unless string.count('(')==string.count(')') 
-        #puts string, "initial input"
-        x=1/0
+        puts string, "initial input"
+        raise(ArgumentError, "Unmatched parentheses")
         #puts prepare(string), "outcome of prepare"
     end
         x=evaluate(prepare(string))[1..-2].to_r
