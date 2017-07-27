@@ -115,6 +115,18 @@ class ElementsController < ApplicationController
         end
     end
 
+    def update_tags
+        taglist = params[:tags]
+        idlist = params[:id]
+        n = taglist.count
+        n.times do |i|
+            id, tag = idlist[i], taglist[i]
+            element = Element.find(id)
+            element.update_attribute(:tags, tag)
+        end
+        redirect_to action: "index"
+    end
+
     def add_to_item
 
 

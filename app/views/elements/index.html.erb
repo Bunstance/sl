@@ -12,31 +12,32 @@
   <%=render 'layouts/indexintro' %>
 
 <% end %>
+<%= form_tag 'elements/update_tags', multipart: true do%>
+	<table class="table" align="left">
+	<tr>  
+		<th><%= sortable "id" %></th>
+		<th><%= sortable "name" %></th> 
+		<th><%= sortable "author" %></th>    
+		<th><%= sortable "category" %></th>  
+		<th><%= sortable "tags" %></th>
+		<th> </th>
+	</tr>
 
-<table class="table" align="left">
-<tr>  
-	<th><%= sortable "id" %></th>
-	<th><%= sortable "name" %></th> 
-	<th><%= sortable "author" %></th>    
-	<th><%= sortable "category" %></th>  
-	<th><%= sortable "tags" %></th>
-	<th> </th>
-</tr>
-
-	<% for element in @elements %>
-	    <%= render element %>
-	<% end %>
+		<% for element in @elements %>
+		    <%= render element %>
+		<% end %>
 
 
 
-</table>
+	</table>
+
+<% end %>
 <%= link_to("New Element", new_element_path) %>
 
 <%= will_paginate %>
+
 
 <% if session[:current_item_id] %>
 <p>
 <%= link_to("Go to Item "+session[:current_item_id].to_s, "/items/"+session[:current_item_id].to_s+"/edit") %>
 <% end %>
-
-

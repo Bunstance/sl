@@ -49,6 +49,7 @@ FirstApp::Application.routes.draw do
   match '/contact', to: 'static_pages#contact', via: [:get]
   match '/courseitem', to: 'profiles#show_item', via: [:get]
   match '/tasks/:id', to: 'tasks#show', via: :post
+  match '/elements/update_tags', to: 'elements#update_tags', via: :post
   #match '/addquestion', to: 'questions#new'
 
 
