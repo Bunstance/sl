@@ -14,11 +14,11 @@
   <%= element.category %>
   </td>
     <td>
-  <i><%= text_field_tag "tags[]", element.tags, class: "small", size: "6" %></i>
+  <i><%= text_field_tag "tags[]", element.tags, class: "small", size: "18" %></i>
   <%= hidden_field_tag "id[]", element.id %> 
     </td>
     <td>
-  <%= submit_tag 'update', class: "small" %>
+  <%= submit_tag '  update  ', class: "tagbutton" %>
   </td>
     <td> 
   <% if @task and current_user.author?%>

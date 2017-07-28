@@ -76,18 +76,21 @@ class ElementsController < ApplicationController
                     oldcode = tycode
                     title = v[2].split('\\')[-1][5..-1]
                     nam = title
-                    i = 1
-                    until !Element.find_by_name(nam)
-                        nam = title + "(#{i})"
-                        i += 1
+                    link = "https://www.youtube.com/embed/" + tycode + "?rel=0"
+                    unless Element.find_by_content(link)
+                        i = 1
+                        until !Element.find_by_name(nam)
+                            nam = title + "(#{i})"
+                            i += 1
+                        end
+                        @el = Element.new
+                        @el.update_attribute(:name , nam)
+                        @el.update_attribute(:tags , tags)
+                        @el.update_attribute(:category , "video")
+                        @el.update_attribute(:content , link)
+                        @el.update_attribute(:author, current_user.id) if current_user
+                        @el.save
                     end
-                    @el = Element.new
-                    @el.update_attribute(:name , nam)
-                    @el.update_attribute(:tags , tags)
-                    @el.update_attribute(:category , "video")
-                    @el.update_attribute(:content , "https://www.youtube.com/embed/" + tycode + "?rel=0")
-                    @el.update_attribute(:author, current_user.id) if current_user
-                    @el.save
 
 
                 end

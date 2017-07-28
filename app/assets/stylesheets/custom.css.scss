@@ -311,7 +311,38 @@ input.ans_field {
 
 
 input.small {
-  font-size: 1em;
+  padding: 0px;
+  font-size: 0.8em;
+  background-color: $teallight;
+}input.smalllow {
+  position: relative;
+  top: 0.35em;
+  padding: 0px;
+  font-size: 0.8em;
+  background-color: $teallight;
+}
+input.tagbutton {
+  padding: 0px;
+  font-size: 0.8em;
+  background-color: $tealvdark;
+  color: $teallight;
+  background-color: $tealvdark;
+  &:hover {
+    color: $pinkish;
+  }
+}
+
+input.tealbutton {
+  position: relative;
+  top: 0.35em;
+  padding: 0px;
+  font-size: 0.8em;
+  background-color: $tealvdark;
+  color: $teallight;
+  background-color: $tealvdark;
+  &:hover {
+    color: $pinkish;
+  }
 }
 
 input.large {
@@ -337,6 +368,7 @@ button.teal {
     color: $pinkish;
   }
 }
+
 input.reseed {
   font-family: Trebuchet MS;
   font-size: 0.9em;
