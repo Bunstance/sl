@@ -68,6 +68,7 @@ class ElementsController < ApplicationController
         if params["htmlstring"]
             oldcode = ""
             t = params["htmlstring"].split("u003c")
+            data = []
 
             t.each do |u|
                 v = u.split(/video_id=([^\\]+)/)
@@ -83,17 +84,21 @@ class ElementsController < ApplicationController
                             nam = title + "(#{i})"
                             i += 1
                         end
-                        @el = Element.new
-                        @el.update_attribute(:name , nam)
-                        @el.update_attribute(:tags , tags)
-                        @el.update_attribute(:category , "video")
-                        @el.update_attribute(:content , link)
-                        @el.update_attribute(:author, current_user.id) if current_user
-                        @el.save
+                        data << [nam,link]
                     end
 
 
                 end
+            end
+            data.reverse.each do |nam,link|
+                @el = Element.new
+                @el.update_attribute(:name , nam)
+                @el.update_attribute(:tags , tags)
+                @el.update_attribute(:category , "video")
+                @el.update_attribute(:content , link)
+                @el.update_attribute(:safe_content , link)
+                @el.update_attribute(:author, current_user.id) if current_user
+                @el.save
             end
             redirect_to action: "index"
         else

@@ -1,4 +1,4 @@
-/* ONLY ADMINISTRATORS SHOULD HAVE ACCESS */
+
 
 <%= provide(:title, 'New Element') %>
 <h1>Enter a New Element</h1>
@@ -23,6 +23,7 @@
       <%= f.label :tags, :style => "font-size: 1.7em;"%>
       <%= f.text_field :tags %>
 
+      <br>Or you can bulk upload video links by pasting the raw html of the video manager page in Youtube below. The tag will be applied to all.<br>
       <%= text_area_tag "htmlstring"%>
 
 
