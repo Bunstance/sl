@@ -325,7 +325,6 @@ class TasksController < ApplicationController
             array = content.split(" ")
             content = (array + incoming).join(" ")
         end
-        puts "\n\n\nnew content #{content}\n\n\n"
 
         return content
     end
@@ -361,29 +360,33 @@ class TasksController < ApplicationController
         @elements = Element.all
         @questions = Question.search(params[:search],params[:onlyme],current_user.id).order(sort_column + ' ' + sort_direction).paginate(page: params[:qpage]||1, per_page:10)
         @elements = Element.search(params[:search],params[:onlyme],current_user.id).order(sort_column + ' ' + sort_direction).paginate(page: params[:epage]||1, per_page:10)
+        @content ||= @task.content
         @contents = contents(@content,1)
-        @n_contents = @contents.count
+        @n_contents = @contents.count || 0
         #@answers = params[:ans] || Hash.new('')
 
     end
 
     
     def create
-        1/0
         @task = Task.new(params[:task])
-
-        if @task.save
+        oldcontent = @task.content || ""
+        success = @task.save
+        @task.update_attribute :content, content_changes(params,@task.content)
+        if  success
             flash.now[:success] = "Task created."
-            redirect_to @task
-        else
-            flash.now[:notice] = "Task NOT created."
-            @elements = Element.all
-            @questions = Question.search(params[:search],params[:onlyme],current_user.id).all.paginate(params[:qpage]||1, 10)
-            @elements = Element.search(params[:search],params[:onlyme],current_user.id).all.paginate(params[:epage]||1, 10)
-            @content = @task.content
-            @contents = contents(@task.content)
-            render 'new'
+            render "edit"
         end
+
+        flash.now[:notice] = "Task NOT created."
+        @elements = Element.all
+        @questions = Question.search(params[:search],params[:onlyme],current_user.id).all.paginate(params[:qpage]||1, 10)
+        @elements = Element.search(params[:search],params[:onlyme],current_user.id).all.paginate(params[:epage]||1, 10)
+        @content = @task.content
+        @contents = contents(@task.content)
+            @n_contents = @contents.count || 0
+        render 'new'
+    
     end
 
     def edit
@@ -411,13 +414,12 @@ class TasksController < ApplicationController
         @task = Task.find(params[:id])
         oldcontent = @task.content
         success = @task.update_attributes(params[:task])
-            @task.update_attribute :content, content_changes(params,@task.content)
-        if  success
-            #flash.now[:success] = "Task created."
-            if @task.content == oldcontent
-                redirect_to @task and return
-            end
+        newcontent = content_changes(params,@task.content)         
+        if newcontent == oldcontent
+            redirect_to @task and return
         end
+        @task.update_attribute :content, content_changes(params,@task.content)
+
        
  
             #flash.now[:notice] = "Task NOT created. Don't forget to choose a name!"

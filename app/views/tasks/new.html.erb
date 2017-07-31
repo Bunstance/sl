@@ -1,6 +1,5 @@
 <% provide(:title,  "New Task") %>
 
-
 <%= form_for(@task) do |f| %>
 
   <%= f.label :name, :style => "font-size: 1.7em;"%>
@@ -15,18 +14,11 @@
 
   <%= f.submit "Create Task", class: "btn btn-large btn-primary" %>
 
-
-
 	<br><br>Elements available:
 	<%= will_paginate @elements, :param_name => 'epage'%>
 
+	<%=render 'layouts/indexintro' %>
 
-	<%= form_tag new_task_path, :method => 'get' do %>
-
-		<%= hidden_field_tag :content, @content.to_s %>
-		<%=render 'layouts/indexintro' %>
-
-	<% end %>
 
 	<table class="table" align="left">
 	<tr>  
@@ -34,32 +26,28 @@
 		<th> <%= sortable "name",nil,'elementnames' %> </th>  
 		<th> Type </th>  
 		<th> <%= sortable "tags",nil,'elementtags' %> </th>
-		<th> </th>
+		<th>-</th><th>+</th><th>+</th><th>+</th>
 	</tr>
 
 		<% for element in @elements %>
-		    <%= render element, short: true, inc: @content.match("[ \A]#{element.id}"), f: f %>
-	<td>
-		<input type="checkbox" class="css-checkbox" id="checkbox4"  <%= @content.match("[ \A]#{element.id}[ \z]") ? "checked" : "unchecked" %>="true"/>
-		<label for="checkbox4" name="checkbox1_lbl" class="css-label lite-gray-check"></label>
-	</td>    
+		    <%= render element, short: true, f: f, inc: @content.match("[ \A]#{element.id.to_s}[ \z]") %>
     
-    <tr><td><%= check_box_tag("in"+element.id.to_s,"yes" ,@content.match("[ \A]#{element.id}[ \z]")) %><%= f.submit 'bum' %></td></tr>
+    <tr>
+
+
+    </tr>
 		<% end %>
 
-	<tr> <td colspan="6">
 
 	</table>
+
+
 	Questions available:
 	<%= will_paginate @questions, :param_name => 'qpage'%>
 
 
-	<%= form_tag new_task_path, :method => 'get' do %>
-	<%= hidden_field_tag :content, @content.to_s  %>
 
 		<%=render 'layouts/indexintro' %>
-
-	<% end %>
 
 	<table class="table" align="left">
 	</td>
@@ -76,7 +64,7 @@
 
 		<% for question in @questions %>
 		
-		    <%= render question  %>
+		    <%= render question, short: true, f: f, inc: @content.match("[ \A]Q#{question.id.to_s}[ \z]")  %>
 		<% end %>
 
 
@@ -91,9 +79,6 @@
 		<div class = "outline">
 		<% thing = @contents[i] %>
 
-		<% if i == @n_contents - 1 %> 
-			<span id = 'newthing'></span> 
-		<% end %>
 
 		<% if thing[:question] %>
 			<br><h9><%= thing[:text].html_safe %></h9>
