@@ -1,4 +1,5 @@
 
+  <% short ||= false %>
   <tr>
     <td>
 	     <%= element.id %>
@@ -6,25 +7,37 @@
     <td>
 
   <%= link_to element.name, element %>
-  </td>
-    <td>
+  </td
+  <% unless short %>    <td>
   <%= User.find_by_id(element.author) ? User.find_by_id(element.author).name : '' %>
+  <% end %>
   </td>
   <td>
   <%= element.category %>
   </td>
-    <td>
-  <i><%= text_field_tag "tags[]", element.tags, class: "small", size: "18" %></i>
-  <%= hidden_field_tag "id[]", element.id %> 
-    </td>
-    <td>
-  <%= submit_tag '  update  ', class: "tagbutton" %>
-  </td>
-    <td> 
-  <% if @task and current_user.author?%>
-    <% @element=element %>
-    | <%= link_to "Add", params.merge({content: @content, new_thing: "element", new_id: element.id, anchor: "newthing"})%>
+  <td>
+  <% if short %>
+  <%= element.tags %>
   <% else %>
+    <i><%= text_field_tag "tags[]", element.tags, class: "small", size: "18" %></i>
+    <%= hidden_field_tag "id[]", element.id %> 
+      </td>
+      <td>
+    <%= submit_tag '  update  ', class: "tagbutton" %>
+  <% end %>
+  </td>
+    
+  <% if short and current_user.author?%>
+    <td class = "f2"><%= check_box_tag("out"+element.id.to_s,"yes") if @content.match("( |\\A)#{element.id.to_s}( |\\z)")%></td>
+    <td class = "f0"><%= check_box_tag("1in"+element.id.to_s,"yes") %></td>
+    <td class = "f0"><%= check_box_tag("2in"+element.id.to_s,"yes") %></td>
+    <td class = "f0"><%= check_box_tag("3in"+element.id.to_s,"yes") %></td>
+
+
+    <td><%= f.submit 'Update', class: "tagbutton"  %></td>
+    <%=  %>
+  <% else %>
+    <td> 
     <% if current_user.author? %>
 
       <%= link_to "edit", edit_element_path(element.id) %>
@@ -42,10 +55,10 @@
                                     data: { confirm: "You sure?" } %>
 
     <% end %>
+    </td>
   <% end %>
   
     
 
-  </td>
   </tr>
 

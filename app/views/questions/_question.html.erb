@@ -5,15 +5,27 @@
   <td>
     <%= link_to question.name, question %>
   </td>
-  <td>
-  <%= User.find_by_id(question.author) ? User.find_by_id(question.author).name : '' %>
-  </td>
+  <% unless short %>
+    <td>
+    <%= User.find_by_id(question.author) ? User.find_by_id(question.author).name : '' %>
+    </td>
+  <% end  %>
   <td>  
     <i><%= question.text %></i>
   </td>
   <td>
   <i><%= question.tags %></i>
   </td>
+  <td>  <% if short and current_user.author?%>
+    <td class = "f2"><%= check_box_tag("outQ"+question.id.to_s,"yes") if @content.match("( |\\A)Q#{question.id.to_s}( |\\z)")%></td>
+    <td class = "f0"><%= check_box_tag("1inQ"+question.id.to_s,"yes") %></td>
+    <td class = "f0"><%= check_box_tag("2inQ"+question.id.to_s,"yes") %></td>
+    <td class = "f0"><%= check_box_tag("3inQ"+question.id.to_s,"yes") %></td>
+
+
+    <td><%= f.submit 'Update', class: "tagbutton"  %></td>
+    <%=  %>
+  <% else %>
   <td>
     <% if current_user.author? %>
       <% if @task %>
@@ -39,6 +51,8 @@
     
           
 
-</td>
+  </td>
+
+  <% end  %>
 </tr> 
 

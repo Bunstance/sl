@@ -1,126 +1,4 @@
-<% provide(:title,  "Edit Task") %>
-
-
-Content so far:
-
-<% @n_contents.times do |i| %>
-	<div class = "outline">
-	<% thing = @contents[i] %>
-
-	<% if i == @n_contents - 1 %> 
-		<span id = 'newthing'></span> 
-	<% end %>
-
-	<% if thing[:question] %>
-		<br><h9><%= thing[:text].html_safe %></h9>
-		<table>
-		<% (0..thing[:tops].count - 1).each do |i|%>
-		<tr><h10>
-			<td class = "top">
-			<%= thing[:tops][i]%>
-			</td>
-			<td>
-			<input class = "ans_field" type="textarea"  name="@ans[]" value=<%= thing[:answers][i]%> rows="1" cols="20" >
-			</td>
-			<td class = "tail">
-			<%= thing[:tails][i]%>
-			</td>
-			</h10>
-		</tr>
-		<% end %>
-		</table>
-		
-	<% else %>
-	
-	
-	
-		<% if thing[:category]=="text" %>
-	        <br><br><h9> <%= thing[:data] %> </h9> 
-	    <% elsif thing[:category]=="image" %>   
-	    	<br><br><h2> <img src = <%= thing[:data] %> /> </h2> 
-	    <% elsif thing[:category]=="video" %>
-		    <br><br><iframe width="600" height="450"
-			src=<%= thing[:data] %>>
-			</iframe>
-	    	</iframe>
-	    <% end %>
-		
-	
-	
-		
-	<% end %>
-	</div>
-	<br>		
-		
-<% end %>
-
-
-
-
-
-
-<br><br>Elements available:
-<%= will_paginate @elements, :param_name => 'epage'%>
-
-
-<%= form_tag new_task_path, :method => 'get' do %>
-
-<%= hidden_field_tag :content, @content.to_s %>
-	<%=render 'layouts/indexintro' %>
-
-<% end %>
-
-<table class="table" align="left">
-<tr>  
-	<th><%= sortable "id",nil,'elementids' %></th>
-	<th> <%= sortable "name",nil,'elementnames' %> </th>
-	<th> <%= sortable "author",nil,'elementauthors' %> </th>    
-	<th> Category </th>  
-	<th> <%= sortable "tags",nil,'elementtags' %> </th>
-	<th> </th>
-</tr>
-
-	<% for element in @elements %>
-	
-	    <%= render element  %>
-	<% end %>
-
-<tr> <td colspan="6">
-
-</table>
-Questions available:
-<%= will_paginate @questions, :param_name => 'qpage'%>
-
-
-<%= form_tag new_task_path, :method => 'get' do %>
-<%= hidden_field_tag :content, @content.to_s  %>
-
-	<%=render 'layouts/indexintro' %>
-
-<% end %>
-
-<table class="table" align="left">
-</td>
-</tr>
-
-
-<tr>  
-	<th><%= sortable "id",nil,'questionids' %></th>
-	<th> <%= sortable "name",nil,'questionnames' %> </th>
-	<th> <%= sortable "author",nil,'questionauthors' %> </th>    
-	<th> Text </th>  
-	<th> <%= sortable "tags",nil,'questiontags' %> </th>
-	<th> </th>
-</tr>
-
-	<% for question in @questions %>
-	
-	    <%= render question  %>
-	<% end %>
-
-
-
-</table>
+<% provide(:title,  "New Task") %>
 
 <%= form_for(@task) do |f| %>
 
@@ -135,4 +13,116 @@ Questions available:
 
 
   <%= f.submit "Create Task", class: "btn btn-large btn-primary" %>
+
+	<br><br>Elements available:
+	<%= will_paginate @elements, :param_name => 'epage'%>
+
+	<%=render 'layouts/indexintro' %>
+
+
+	<table class="table" align="left">
+	<tr>  
+		<th><%= sortable "id",nil,'elementids' %></th>
+		<th> <%= sortable "name",nil,'elementnames' %> </th>  
+		<th> Type </th>  
+		<th> <%= sortable "tags",nil,'elementtags' %> </th>
+		<th>-</th><th>+</th><th>+</th><th>+</th>
+	</tr>
+
+		<% for element in @elements %>
+		    <%= render element, short: true, f: f, inc: @content.match("[ \A]#{element.id.to_s}[ \z]") %>
+    
+    <tr>
+
+
+    </tr>
+		<% end %>
+
+
+	</table>
+
+
+	Questions available:
+	<%= will_paginate @questions, :param_name => 'qpage'%>
+
+
+
+		<%=render 'layouts/indexintro' %>
+
+	<table class="table" align="left">
+	</td>
+	</tr>
+
+
+	<tr>  
+		<th><%= sortable "id",nil,'questionids' %></th>
+		<th> <%= sortable "name",nil,'questionnames' %> </th>   
+		<th> Text </th>  
+		<th> <%= sortable "tags",nil,'questiontags' %> </th>
+		<th> </th>
+	</tr>
+
+		<% for question in @questions %>
+		
+		    <%= render question, short: true, f: f, inc: @content.match("[ \A]Q#{question.id.to_s}[ \z]")  %>
+		<% end %>
+
+
+
+	</table>
+
+
+
+	Content so far:
+
+	<% @n_contents.times do |i| %>
+		<div class = "outline">
+		<% thing = @contents[i] %>
+
+
+		<% if thing[:question] %>
+			<br><h9><%= thing[:text].html_safe %></h9>
+			<table>
+			<% (0..thing[:tops].count - 1).each do |i|%>
+			<tr><h10>
+				<td class = "top">
+				<%= thing[:tops][i]%>
+				</td>
+				<td>
+				<input class = "ans_field" type="textarea"  name="@ans[]" value=<%= thing[:answers][i]%> rows="1" cols="20" >
+				</td>
+				<td class = "tail">
+				<%= thing[:tails][i]%>
+				</td>
+				</h10>
+			</tr>
+			<% end %>
+			</table>
+			
+		<% else %>
+		
+		
+		
+			<% if thing[:category]=="text" %>
+		        <br><br><h9> <%= thing[:data] %> </h9> 
+		    <% elsif thing[:category]=="image" %>   
+		    	<br><br><h2> <img src = <%= thing[:data] %> /> </h2> 
+		    <% elsif thing[:category]=="video" %>
+			    <br><br><iframe width="600" height="450"
+				src=<%= thing[:data] %>>
+				</iframe>
+		    	</iframe>
+		    <% end %>
+			
+		
+		
+			
+		<% end %>
+		</div>
+		<br>		
+			
+	<% end %>
+
 <% end %>
+
+

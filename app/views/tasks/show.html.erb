@@ -1,5 +1,13 @@
 <% provide(:title, "#{@task.name}") %>
 
+<% if current_user.author %>
+	<div class = 'outline'>
+
+	<%= link_to("Edit Task", edit_task_path) %><br>
+
+	</div>
+<% end %>
+<br>
 
 <div class = 'title'>
   <%= @task.name %> <br><br>
@@ -113,6 +121,9 @@ the system will remember which questions you have correctly answered.
 
 <% if current_user.author %>
 	<div class = 'outline'>
+
+	<%= link_to("Edit Task", edit_task_path) %><br>
+
 		<%= form_tag  do %>
 		
 			Allocate this task to groups:
