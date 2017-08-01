@@ -1,0 +1,14 @@
+
+  <%= hidden_field_tag :qdirection, params[:qdirection] %>
+  <%= hidden_field_tag :qsort, params[:qsort] %>
+  <p>
+    Search for tag: 
+    <%= text_field_tag :qsearch, params[:qsearch], class: "smalllow" %>
+ 
+  	&nbsp&nbsp&nbspOnly show my stuff 
+  	<%= check_box_tag :qonlyme, true, params[:qonlyme] %>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+    <%= submit_tag "  Apply filters  ", class: "tealbutton" %></h8>
+    <h8>
+  </p>
+
+

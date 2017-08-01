@@ -5,9 +5,8 @@
 	     <%= element.id %>
     </td>
     <td>
-
   <%= link_to element.name, element %>
-  </td
+  </td>
   <% unless short %>    <td>
   <%= User.find_by_id(element.author) ? User.find_by_id(element.author).name : '' %>
   <% end %>
@@ -26,15 +25,12 @@
     <%= submit_tag '  update  ', class: "tagbutton" %>
   <% end %>
   </td>
-    
   <% if short and current_user.author?%>
     <td class = "f2"><%= check_box_tag("out"+element.id.to_s,"yes") if @content.match("( |\\A)#{element.id.to_s}( |\\z)")%></td>
     <td class = "f0"><%= check_box_tag("1in"+element.id.to_s,"yes") %></td>
     <td class = "f0"><%= check_box_tag("2in"+element.id.to_s,"yes") %></td>
     <td class = "f0"><%= check_box_tag("3in"+element.id.to_s,"yes") %></td>
-
-
-    <td><%= f.submit 'Update', class: "tagbutton"  %></td>
+    <td><%= f.submit 'Update', class: "tagbutton"  %><%= f.submit 'Finish', class: "tagbutton"  %></td>
     <%=  %>
   <% else %>
     <td> 

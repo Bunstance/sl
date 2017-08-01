@@ -143,11 +143,27 @@ module ApplicationHelper
         false
     end
 
-    def sortable(column, title = nil,anchor = nil)
+    def sortable(column, title = nil,anchor = nil,list_data = {})
+        qsort_direction = list_data[:qsort_direction]
+        qsort_column = list_data[:qsort_column]
         title ||= column.titleize
         css_class = (column == sort_column) ? "current #{sort_direction}" : nil
         direction = (column == sort_column && sort_direction == "desc") ? "asc" : "desc"
-        url_options = {:sort => column, :direction => direction, :page => nil, :content => @content}
+        url_options = list_data.merge({:sort => column, :direction => direction, :page => nil, :content => @content})
+        html_options = {:class => css_class}
+        if anchor
+            url_options[:anchor] = html_options[:id] = anchor
+        end
+        link_to title, url_options, html_options
+    end
+        
+    def qsortable(column, title = nil,anchor = nil,list_data = {})
+        qsort_direction = list_data[:qsort_direction]
+        qsort_column = list_data[:qsort_column]
+        title ||= column.titleize
+        css_class = (column == qsort_column) ? "current #{qsort_direction}" : nil
+        direction = (column == qsort_column && qsort_direction == "desc") ? "asc" : "desc"
+        url_options = list_data.merge({:qsort => column, :qdirection => direction, :qpage => nil, :content => @content})
         html_options = {:class => css_class}
         if anchor
             url_options[:anchor] = html_options[:id] = anchor

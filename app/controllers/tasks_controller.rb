@@ -348,6 +348,10 @@ class TasksController < ApplicationController
     end
     
     def new
+        @sorthash = update_sorts(eval(params[:sorthash]||"{}"))
+        @eorder = @sorthash[:ecolumn]+ ' ' + @sorthash[:edirection]
+        @qorder = @sorthash[:qcolumn]+ ' ' + @sorthash[:qdirection]
+
         @content = params[:content]||""
         new_id = params[:new_id]
         case params[:new_thing]
@@ -358,38 +362,49 @@ class TasksController < ApplicationController
         end
         @task = Task.new
         @elements = Element.all
-        @questions = Question.search(params[:search],params[:onlyme],current_user.id).order(sort_column + ' ' + sort_direction).paginate(page: params[:qpage]||1, per_page:10)
-        @elements = Element.search(params[:search],params[:onlyme],current_user.id).order(sort_column + ' ' + sort_direction).paginate(page: params[:epage]||1, per_page:10)
+        @questions = Question.search(params[:qsearch],params[:onlyme],current_user.id).order( @sorthash[:qcolumn]+  ' ' + @sorthash[:qdirection]).paginate(page: @sorthash[:qpage], per_page:10)
+        @elements = Element.search(params[:search],params[:onlyme],current_user.id).order( @sorthash[:ecolumn]+  ' ' + @sorthash[:edirection]).paginate(page: @sorthash[:epage], per_page:10)
+        
         @content ||= @task.content
         @contents = contents(@content,1)
         @n_contents = @contents.count || 0
+        @task.name = params[:name]||""
+        @task.tags = params[:tags]||""
         #@answers = params[:ans] || Hash.new('')
 
     end
 
     
     def create
+        @sorthash = update_sorts(eval(params[:sorthash]||"{}"))
+        @eorder =  @sorthash[:ecolumn]+ ' ' + @sorthash[:edirection]
+        @qorder = @sorthash[:qcolumn]+ ' ' + @sorthash[:qdirection]
+        @content = params[:content]||""
         @task = Task.new(params[:task])
         oldcontent = @task.content || ""
         success = @task.save
         @task.update_attribute :content, content_changes(params,@task.content)
+        flash.now[:notice] = "Task NOT created."
+        @elements = Element.all
+        @questions = Question.search(params[:qsearch],params[:onlyme],current_user.id).order( @sorthash[:qcolumn]+  ' ' + @sorthash[:qdirection]).paginate(page: @sorthash[:qpage], per_page:10)
+        @elements = Element.search(params[:search],params[:onlyme],current_user.id).order( @sorthash[:ecolumn]+  ' ' + @sorthash[:edirection]).paginate(page: @sorthash[:epage], per_page:10)
+        
+        @content = @task.content
+        @contents = contents(@task.content)
+            @n_contents = @contents.count || 0
         if  success
             flash.now[:success] = "Task created."
             render "edit"
         end
 
-        flash.now[:notice] = "Task NOT created."
-        @elements = Element.all
-        @questions = Question.search(params[:search],params[:onlyme],current_user.id).all.paginate(params[:qpage]||1, 10)
-        @elements = Element.search(params[:search],params[:onlyme],current_user.id).all.paginate(params[:epage]||1, 10)
-        @content = @task.content
-        @contents = contents(@task.content)
-            @n_contents = @contents.count || 0
         render 'new'
     
     end
 
     def edit
+        @sorthash = update_sorts(eval(params[:sorthash]||"{}"))
+        @eorder =  @sorthash[:ecolumn]+ ' ' + @sorthash[:edirection]
+        @qorder = @sorthash[:qcolumn]+ ' ' + @sorthash[:qdirection]
         @content = params[:content]||""
         new_id = params[:new_id]
         case params[:new_thing]
@@ -401,36 +416,49 @@ class TasksController < ApplicationController
         id = params[:id].to_i
         @task = Task.find(id)
         @elements = Element.all
-        @questions = Question.search(params[:search],params[:onlyme],current_user.id).order(sort_column + ' ' + sort_direction).paginate(page: params[:qpage]||1, per_page:10)
-        @elements = Element.search(params[:search],params[:onlyme],current_user.id).order(sort_column + ' ' + sort_direction).paginate(page: params[:epage]||1, per_page:10)
+        @questions = Question.search(params[:qsearch],params[:onlyme],current_user.id).order( @sorthash[:qcolumn]+  ' ' + @sorthash[:qdirection]).paginate(page: @sorthash[:qpage], per_page:10)
+        @elements = Element.search(params[:search],params[:onlyme],current_user.id).order( @sorthash[:ecolumn]+  ' ' + @sorthash[:edirection]).paginate(page: @sorthash[:epage], per_page:10)
         
         @content = params[:content]||@task.content
         @contents = contents(@content,1)
         @n_contents = @contents.count || 0
+        @task.name = params[:name]||@task.name||""
+        @task.tags = params[:tags]||@task.tags||""
         #@answers = params[:ans] || Hash.new('')
-
     end
     def update
+        @sorthash = update_sorts(eval(params[:sorthash]||"{}"))
+        @eorder = @sorthash[:ecolumn]+ ' ' + @sorthash[:edirection]
+        @qorder = @sorthash[:qcolumn]+ ' ' + @sorthash[:qdirection]
+
         @task = Task.find(params[:id])
         oldcontent = @task.content
         success = @task.update_attributes(params[:task])
-        newcontent = content_changes(params,@task.content)         
-        if newcontent == oldcontent
+        newcontent = content_changes(params,@task.content)        
+        @task.update_attribute :content, content_changes(params,@task.content) 
+        if params[:commit] and params[:commit] == "Finish"
             redirect_to @task and return
         end
-        @task.update_attribute :content, content_changes(params,@task.content)
-
-       
- 
-            #flash.now[:notice] = "Task NOT created. Don't forget to choose a name!"
-            @elements = Element.all
-            @questions = Question.search(params[:search],params[:onlyme],current_user.id).all.paginate(params[:qpage]||1, 10)
-            @elements = Element.search(params[:search],params[:onlyme],current_user.id).all.paginate(params[:epage]||1, 10)
-            @content = @task.content
-            @contents = contents(@task.content)
-            @n_contents = @contents.count || 0
-            render 'edit'
+        #flash.now[:notice] = "Task NOT created. Don't forget to choose a name!"
+        @elements = Element.all
+        @questions = Question.search(params[:qsearch],params[:onlyme],current_user.id).order( @sorthash[:qcolumn]+  ' ' + @sorthash[:qdirection]).paginate(page: @sorthash[:qpage], per_page:10)
+        @elements = Element.search(params[:search],params[:onlyme],current_user.id).order( @sorthash[:ecolumn]+  ' ' + @sorthash[:edirection]).paginate(page: @sorthash[:epage], per_page:10)
         
+        @content = @task.content
+        @contents = contents(@task.content)
+        @n_contents = @contents.count || 0
+        anchor = "elementstable"
+        if @task.name == ""
+            anchor = "top"
+        elsif params[:commit].match(/\Aq /)
+            anchor = "questionstable"
+        end
+
+        if params[:anchor] and params[:anchor] = anchor
+            render 'edit'
+        else
+            redirect_to params.merge({action: "edit", anchor: anchor})
+        end
     end
 
     
@@ -584,18 +612,52 @@ class TasksController < ApplicationController
     #     end
     #     return nil
     # end
-        
+    
+    def update_sorts(sorthash)
+        sorthash[:epage] = params[:ep] ||  params[:epage] || sorthash[:epage]
+        sorthash[:qpage] =  params[:qp] || params[:qpage] || sorthash[:qpage]
+        p = params[:commit]
+        if p and p.match(/\A[eq] /)
+            type,col = p.split(" ")
+            if sorthash[(type + "direction").to_sym] == "asc" and col == sorthash[(type + "column").to_sym] 
+                sorthash[(type + "direction").to_sym] = "desc"
+            else
+                sorthash[(type + "direction").to_sym] = "asc"
+            end
+            sorthash[(type + "column").to_sym] = col
+            sorthash[(type + "page").to_sym] = 1
+        end
+        sorthash[:edirection] ||= "asc"
+        sorthash[:qdirection] ||= "asc"
+        sorthash[:ecolumn] ||= "id"
+        sorthash[:qcolumn] ||= "id"
+        sorthash
+
+    end
+
+
     
     
     
     private
+        def sorthash
+            {qdirection: qsort_direction, qcolumn: qcolumn, qpage: params[:qpage],edirection: esort_direction, ecolumn: ecolumn, epage: params[:epage]}
+        end
 
         def sort_direction
             %w[asc desc].include?(params[:direction]) ?  params[:direction] : "desc"
         end
     
         def sort_column
-            Item.column_names.include?(params[:sort]) ? params[:sort] : "id"
+            %w[id tags name].include?(params[:sort]) ? params[:sort] : "id"
+        end
+    
+        def qsort_direction
+            %w[asc desc].include?(params[:qdirection]) ?  params[:qdirection] : "desc"
+        end
+    
+        def qsort_column
+            %w[id tags name].include?(params[:qsort]) ? params[:qsort] : "id"
         end
     
         def author_user

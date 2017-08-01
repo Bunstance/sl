@@ -672,6 +672,19 @@ table.t td {
      width: 100%;
  }
 
+ button.linky {
+  font-family: 'Bookman Old Style';
+  font-weight: bold;
+  color: #5588dd;  
+  padding: 0px;
+  border: none; 
+  background-color: white;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+
 .bobutton {
   font-family: 'Bookman Old Style';
   font-weight: bold; 
