@@ -370,6 +370,7 @@ class TasksController < ApplicationController
         @n_contents = @contents.count || 0
         @task.name = params[:name]||""
         @task.tags = params[:tags]||""
+        render "new"
         #@answers = params[:ans] || Hash.new('')
 
     end
