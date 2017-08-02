@@ -396,9 +396,10 @@ class TasksController < ApplicationController
         if  success
             flash.now[:success] = "Task created."
             render "edit"
-        end
+        else
 
-        render 'new'
+            render 'new'
+        end
     
     end
 
@@ -628,7 +629,7 @@ class TasksController < ApplicationController
             sorthash[(type + "column").to_sym] = col
             sorthash[(type + "page").to_sym] = 1 unless params[:paginated]
         end
-        sorthash[:edirection] ||= "asc"
+        sorthash[:edirection] ||= "desc"
         sorthash[:qdirection] ||= "asc"
         sorthash[:ecolumn] ||= "id"
         sorthash[:qcolumn] ||= "id"
