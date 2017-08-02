@@ -438,6 +438,7 @@ class TasksController < ApplicationController
         newcontent = content_changes(params,@task.content)        
         @task.update_attribute :content, content_changes(params,@task.content) 
         if params[:commit] and params[:commit] == "Finish"
+            1/0
             redirect_to @task and return
         end
         #flash.now[:notice] = "Task NOT created. Don't forget to choose a name!"
@@ -449,8 +450,9 @@ class TasksController < ApplicationController
         @contents = contents(@task.content)
         @n_contents = @contents.count || 0
         anchor = "elementstable"
-        if @task.name == ""
+        if @task.name == "" or !params[:sorthash]
             anchor = "top"
+        }
         elsif params[:commit].match(/\Aq /)
             anchor = "questionstable"
         end
