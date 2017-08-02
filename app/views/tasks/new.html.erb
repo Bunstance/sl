@@ -19,7 +19,7 @@
 
 	<br><br>Elements available:
 	<span id = "elementstable"></span>
-	<%= will_paginate @elements, :param_name => 'ep', :params => {controller: "tasks", action: "edit", anchor: "elementstable"} %>
+	<%= will_paginate @elements, :param_name => 'ep', :params => {controller: "tasks", action: "edit", anchor: "elementstable", paginated: true} %>
 
 	<%=render 'layouts/indexintro' %>
 
@@ -43,7 +43,7 @@
 	Questions available:
 
 	<span id = "questionstable"></span>
-	<%= will_paginate @questions, :param_name =>"qp", :params => {controller: "tasks", action: "edit", anchor: "questionstable"} %>
+	<%= will_paginate @questions, :param_name =>"qp", :params => {controller: "tasks", action: "edit", anchor: "questionstable", paginated: true} %>
 
 
 

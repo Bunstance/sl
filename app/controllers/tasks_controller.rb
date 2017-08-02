@@ -625,7 +625,7 @@ class TasksController < ApplicationController
                 sorthash[(type + "direction").to_sym] = "asc"
             end
             sorthash[(type + "column").to_sym] = col
-            sorthash[(type + "page").to_sym] = 1 if params[(type + "p").to_sym]
+            sorthash[(type + "page").to_sym] = 1 unless params[:paginated]
         end
         sorthash[:edirection] ||= "asc"
         sorthash[:qdirection] ||= "asc"

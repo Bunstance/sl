@@ -26,6 +26,12 @@ $graydark: #668888;
 /* universal */
 
   
+:target:before {
+content:"";
+display:block;
+height:90px; /* fixed header height*/
+margin:-90px 0 0; /* negative fixed header height */
+}
 
 html {
   font-family: Bookman Old Style;
