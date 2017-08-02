@@ -251,7 +251,7 @@ class TasksController < ApplicationController
         #params[:sort]||='id'
         #params[:direction]||='desc'
         #@tasks = Task.order(params[:sort] + ' ' + params[:direction]).paginate(per_page: number_per_page, page: params[:page])
-        @tasks = Task.all
+        @tasks = Task.order("id DESC")
     end
     
     def destroy
@@ -621,10 +621,10 @@ class TasksController < ApplicationController
         p = params[:commit]
         if p and p.match(/\A[eq] /)
             type,col = p.split(" ")
-            if sorthash[(type + "direction").to_sym] == "asc" and col == sorthash[(type + "column").to_sym] 
-                sorthash[(type + "direction").to_sym] = "desc"
-            else
+            if sorthash[(type + "direction").to_sym] == "desc" and col == sorthash[(type + "column").to_sym] 
                 sorthash[(type + "direction").to_sym] = "asc"
+            else
+                sorthash[(type + "direction").to_sym] = "desc"
             end
             sorthash[(type + "column").to_sym] = col
             sorthash[(type + "page").to_sym] = 1 unless params[:paginated]
