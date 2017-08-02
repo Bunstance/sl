@@ -1,8 +1,5 @@
 <% provide(:title,  "New Task") %>
-
-ss <%= @sorthash %><br>
-e <%= @eorder %><br>
-q <%= @qorder %><br>
+<span id = "top"></span>
 <%= form_for(@task) do |f| %>
 	<%= hidden_field_tag "sorthash", @sorthash %>
 
@@ -19,18 +16,19 @@ q <%= @qorder %><br>
 
   <%= f.submit "Finish", class: "btn btn-large btn-primary" %>
 
+
 	<br><br>Elements available:
-	<%= will_paginate @elements, :param_name => 'ep', :params => {controller: "tasks", action: "new"} %>
+	<span id = "elementstable"></span>
+	<%= will_paginate @elements, :param_name => 'ep', :params => {controller: "tasks", action: "edit", anchor: "elementstable"} %>
 
 	<%=render 'layouts/indexintro' %>
 
-
 	<table class="table" align="left">
 	<tr>  
-		<th> <button name="commit" value="e id" type="submit">Id</button></th>
-		<th> <button name="commit" value="e name" type="submit">Name</button></th> 
+		<th> <button class="linky"  name="commit" value="e id" type="submit">Id</button></th>
+		<th> <button class="linky" name="commit" value="e name" type="submit">Name</button></th> 
 		<th> Type </th>  
-		<th> <button name="commit" value="e tags" type="submit">Tags</button></th>
+		<th> <button class="linky" name="commit" value="e tags" type="submit">Tags</button></th>
 		<th>-</th><th>+</th><th>+</th><th>+</th>
 	</tr>
 		<% for element in @elements %>
@@ -42,9 +40,10 @@ q <%= @qorder %><br>
 		<% end %>
 	</table>
 
-
 	Questions available:
-	<%= will_paginate @questions, :param_name =>"qp", :params => {controller: "tasks", action: "new"} %>
+
+	<span id = "questionstable"></span>
+	<%= will_paginate @questions, :param_name =>"qp", :params => {controller: "tasks", action: "edit", anchor: "questionstable"} %>
 
 
 
@@ -56,11 +55,13 @@ q <%= @qorder %><br>
 
 
 	<tr>  
-		<th> <button name="commit" value="q id" type="submit">Id</button></th>
-		<th> <button name="commit" value="q name" type="submit">Name</button></th>
+		<th> <button class="linky" name="commit" value="q id" type="submit" href = "#elementstable">Id</button></th>
+		<th> <button class="linky" name="commit" value="q name" type="submit">Name</button></th>
 		<th> Text </th>  
-		<th> <button name="commit" value="q tags" type="submit">Tags</button></th>
-		<th> </th>
+		<th> <button class="linky" name="commit" value="q tags" type="submit">Tags</button></th><th></th>
+	
+		<th>-</th><th>+</th><th>+</th><th>+</th>
+	<th style = "width: 70px;"></th>
 	</tr>
 
 		<% for question in @questions %>
