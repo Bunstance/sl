@@ -452,7 +452,6 @@ class TasksController < ApplicationController
         anchor = "elementstable"
         if @task.name == "" or !params[:sorthash]
             anchor = "top"
-        }
         elsif params[:commit].match(/\Aq /)
             anchor = "questionstable"
         end
