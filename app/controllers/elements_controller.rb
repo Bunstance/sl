@@ -65,7 +65,7 @@ class ElementsController < ApplicationController
     def create
         @element = Element.new(params[:element])
         tags = @element.tags
-        if params["htmlstring"]
+        if params["htmlstring"] != ""
             oldcode = ""
             t = params["htmlstring"].split("u003c")
             data = []

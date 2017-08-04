@@ -174,11 +174,11 @@ module ApplicationHelper
     def feedback_text
         #{0 => "Everything is going well", 1 => "Things are OK, but I know I can do better", 2 => "I feel maths is going badly for me"}
         #{0 => "Everything worked pretty fast and well", 1 => "Not too bad", 2 => "It was annoyingly slow"}  
-        {0 => "Better than MyMaths", 1 => "About the same as MyMaths", 2 => "I prefer MyMaths"}  
+        {0 => "I understand this well", 1 => "I think I understand, but I'm not completely confident", 2 => "I don't understand this at all well"}  
     end
 
     def feedback_interval
-        3.years
+        2.seconds
     end
 
     def number_per_page
