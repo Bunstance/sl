@@ -170,7 +170,7 @@ class ElementsController < ApplicationController
 
     def naughty_content?(element)
         if element[:category]=="text"
-            if element[:content].gsub(/<\/?(div[^>]*|h\d+|br)>/,"").match(/.*<.*>.*/)
+            if element[:content].match(/.*<.*>.*/)
                 @flash_text = 'for html safeness please avoid using "< ... >". You can use MathJax \\gt and \\lt. Please resubmit content.'
                 true
             else

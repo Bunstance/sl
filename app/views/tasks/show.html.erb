@@ -18,7 +18,19 @@
 	<% if @revision_mode %>
 		This task is now in revision mode and you can use the questions for extra practice as necessary. You can generate new questions by changing your random number seed on your home page.
 		<% else %>
-		The videos show the methods needed. You are not expected to solve the questions in your head. Write out solutions on paper as you normally would, then enter answers for checking. 	If you exceed the permitted attempts, the question will reset and you can try again. However, the number of resets is recorded.
+<!--		The videos show the methods needed. You are not expected to solve the questions in your head. Write out solutions on paper as you normally would, then enter answers for checking. 	If you exceed the permitted attempts, the question will reset and you can try again. However, the number of resets is recorded.
+
+		By using the videos well, you will not just have good notes but you will understand them too!<br>
+		Try to be as "interactive" as you can by doing these things:<br><br>
+-->
+		<ul>
+			<li>Pause the video frequently and see if you can predict the next part of the solution.</li>
+			<li>Rewind and re-watch as often as you need to to be sure you understand.</li>
+			<li>After watching the video, see if you can repeat the solution on your own.</li>
+			<li>Make sure that you have a full solution in your notes, matching all the steps in the video.</li>
+			<li>When you revise, your notes are your record of the method, but you can come back to the videos if you need the explanation again. This must be linked to practice on questions.</li>
+		</ul>
+		There may be some questions on this page. You are not expected to solve these in your head. Write out solutions on paper as you normally would, then enter answers for checking. 	If you exceed the permitted attempts, the question will reset and you can try again. However, the number of resets is recorded.
 		<% end %>
 	
 </h12>
@@ -97,7 +109,7 @@ the system will remember which questions you have correctly answered.
 		<%=form_tag task_path(anchor: "feedback"), id: "feedback", class: "feedback" do %>
 		
 		<h13>
-			How do you feel about this site?
+			How do you feel about this topic?
 			<br>
 			<% feedback_text.keys.count.times do |i| %>
 				<br>

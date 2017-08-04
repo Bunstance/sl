@@ -12,7 +12,8 @@ gem 'bootstrap-will_paginate', '0.0.6'
 gem 'mathjax-rails'
 gem 'rubystats'
 gem 'rails_12factor'
-  gem 'test-unit', '~> 3.0'
+gem 'test-unit', '~> 3.0'
+
 
 group :development do
   gem 'sqlite3'
