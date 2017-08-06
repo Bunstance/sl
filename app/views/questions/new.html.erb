@@ -26,7 +26,7 @@
       <%= render "answer_form" %>
       <%= f.text_field :answers %>
 
-      <%= f.label :precision_regime, :style => "font-size: 1.7em;"%> h0 for exact answers only, Otherwise  h/s/r (harsh/soft/rounded) + number of sf.
+      <%= f.label :precision_regime, :style => "font-size: 1.7em;"%> h0 for exact answers only, Otherwise  h/s/r (harsh/soft/rounded) + number of sf. w0 for word answers and m0 for multichoice - answers are 1 for correct and 0 for worng.
       <%= f.text_field :precision_regime %>
 
       <%= f.submit "Create Question", class: "btn btn-large btn-primary" %>
