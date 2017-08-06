@@ -77,6 +77,18 @@ class TasksController < ApplicationController
         if question_attempted
             answers_given = params["ans#{question_attempted}".to_sym]
             m = answers_given.count
+            if params[:mc]
+                j = m - 1
+                while j > 0
+                    if answers_given[j] == "1"
+                        answers_given.delete_at(j-1)
+                        j -= 1
+                    end
+                    j -= 1
+                end
+            end
+            puts "\n\n\n\n\n#{answers_given}\n\n\n\n\n\n\n"
+
             m.times do |j|
                 ans_array_insert(recent_answers,[id,question_attempted,j,answers_given[j]])
             end
@@ -111,6 +123,7 @@ class TasksController < ApplicationController
         @top = {}
         @tail = {}
         @parts = {}
+        @mc = {}
         @divstyle = Hash.new {''}
         thing_list = @task.content.split(' ')
         @n = thing_list.count
@@ -134,6 +147,7 @@ class TasksController < ApplicationController
                 construct(seed)
                 @text[i] = @example_question
                 m = @example_answers.count
+                @mc[i] = false
                 @parts[i] = m
                 prompts = @promptlist.map {|x| x.split(punc1)}
                 score = []
@@ -142,6 +156,10 @@ class TasksController < ApplicationController
                     @tail[[i,j]] = prompts[j][1]
                     @answer[[i,j]] = @example_answers[j][0..-3]
                     prec = @example_answers[j][-2..-1]
+                    if prec == "m0"
+                        prec = "h0"
+                        @mc[i] = true
+                    end
                     ans = ans_lookup(recent_answers,id,i,j)
                     score[j] = ans == "" ? -1 : match(ans,@answer[[i,j]],prec)
                     @given_answer[[i,j]] = ans

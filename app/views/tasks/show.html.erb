@@ -52,6 +52,12 @@
 	<%	end %>
 	<% if @parts[i] and @parts[i] > 0 %>
 		<%=form_tag task_path(anchor: "question#{i}"), id: "question#{i}", class: "question" %>
+		<% if @mc[i] %><br>
+			Tick the boxes next to the correct answer(s)
+
+			<input type="hidden" name="mc" value = "mc" >
+			<br><br>
+		<% end %>
 	<table>
 		<% @parts[i].times do |j| %>
 		<tr><h10>
@@ -59,17 +65,22 @@
 			<%= @top[[i,j]] %>
 			</td>
 			<td>
-			<input class = "ans_field" type="textarea" name="<%="ans#{i}[]"%>" rows="1" cols="20" value = <%= @given_answer[[i,j]] %>  >
+			<% if @mc[i] %>
+				<input type="hidden" name="<%="ans#{i}[]"%>" value = "0" >
+				<input type="checkbox" name="<%="ans#{i}[]"%>" value = "1" <%= "#{@given_answer[[i,j]][0] == "1" ? "checked = 'true'" : ""}" %> >
+			<% else %>
+				<input class = "ans_field" type="textarea" name="<%="ans#{i}[]"%>" rows="1" cols="20" value = <%= @given_answer[[i,j]] %>  >
+			<% end%>
 			</td>
 			<td class = "tail">
 			<%= @tail[[i,j]] %>
 			</td>
-			</h10>
 			<td> 
 			<% if @marksymbol[[i,j]] and @marksymbol[[i,j]] >= 0%>
 				<p align='right'> <img class = 'score_mark' src = <%= case @marksymbol[[i,j]]; when 0 then asset_path('Tick.png'); when 2 then asset_path('Cross.png'); when 1 then asset_path('Triangle.png');end %> width='40' height='40' /> </p> </td> 
 			<% end %>
 			
+			</h10>
 		</tr>	
 		
 		<% end %>
