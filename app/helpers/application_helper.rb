@@ -6,6 +6,14 @@ module ApplicationHelper
 
     require 'rubystats'
 
+    def frac(x)
+        if x.denominator == 1
+            x.numerator.to_s
+        else
+            "\\frac{#{x.numerator}}{#{x.denominator}}"
+        end
+    end
+
     def multifunc 
         ['plus','chicrit','chistat','chiexp','pmcc','spearman','pmcccrit','spearmancrit','mwstat','mwcrit','kwstat']
     end
@@ -535,13 +543,13 @@ def users_browser_ie?
 
     
         # recursively deal with all brackets.
-        puts 'starting over with', input
+        #puts 'starting over with', input
 
         ourexp=input
 
 
         if ourexp.match(/\A<-?\d+\/\d+>\z/)
-            puts 'handing back', ourexp
+            #puts 'handing back', ourexp
             return ourexp
         end
 
@@ -556,8 +564,8 @@ def users_browser_ie?
                 breakdown[0]=ourexp[0..start-1]
                 breakdown[1]=ourexp[start+1..-1]
             end
-            puts 1/0 if breakdown[1]==nil  # we have a ( at the end, which is not good.
-            puts breakdown, 'initial breakdown'
+            #puts 1/0 if breakdown[1]==nil  # we have a ( at the end, which is not good.
+            #puts breakdown, 'initial breakdown'
             count=1
             pos=0
             while count>0
@@ -577,7 +585,7 @@ def users_browser_ie?
                 breakdown[2]=breakdown[1][pos..-1]
                 breakdown[1]=breakdown[1][0..pos-2]
             end
-            print 'dealing with ',breakdown[1], 'but promise not to forget ',breakdown[0], 'or', breakdown[2]
+            #print 'dealing with ',breakdown[1], 'but promise not to forget ',breakdown[0], 'or', breakdown[2]
             #If there is a unary '-' in front of this bracket, we'll take the chance to deal with it.
 
             if breakdown[0]==''
@@ -670,7 +678,7 @@ def users_browser_ie?
         end
 
         
-    puts 'got to 89'
+    #puts 'got to 89'
         if ourexp.match(/\A<-?\d+\/\d+>\z/)
             #puts 'handing back', ourexp
             return ourexp
@@ -751,7 +759,7 @@ def users_browser_ie?
             if d==1 
                 return x.numerator
             else
-                return x
+                return frac(x) #{}"\\frac{#{x.numerator}}{#{x.denominator}}"
             end
         end
         figures=(precision_regime[1..-1]).to_i
@@ -960,6 +968,8 @@ def users_browser_ie?
     def match(stringx,stringy,precision_regime)
         stringy.strip!
 
+                puts "\n\n\n\n\n\n\ndoing #{precision_regime}   #{stringx} and #{stringy}\n\n\n\n\n\n\n"
+
         if precision_regime=="W0"
             if stringx==stringy
                 return 0
@@ -1004,6 +1014,11 @@ def users_browser_ie?
         figs=precision_regime[1..-1].to_i
      
         if figs==0
+            if stringx.match(/\d+\/\d+/)
+                r = stringx.to_r
+                puts "\n\n\n\n\n\ndoing h   #{stringx} and #{frac r}\n\n\n\n\n\n\n"
+                return 0 if stringy == frac(r)
+            end
             if stringx==stringy
                 return 0
             elsif stringx.to_f==stringy.to_f && !stringy==''

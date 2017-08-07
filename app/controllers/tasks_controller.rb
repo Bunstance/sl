@@ -156,8 +156,9 @@ class TasksController < ApplicationController
                     @tail[[i,j]] = prompts[j][1]
                     @answer[[i,j]] = @example_answers[j][0..-3]
                     prec = @example_answers[j][-2..-1]
-                    if prec == "m0"
-                        prec = "h0"
+                    if prec[0] == "m"
+                        prec[0]= "r"
+
                         @mc[i] = true
                     end
                     ans = ans_lookup(recent_answers,id,i,j)
