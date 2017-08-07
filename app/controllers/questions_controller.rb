@@ -115,7 +115,7 @@ before_filter :author_user
             # else
                 
             @question.update_attribute(:safe_text, ActionController::Base.helpers.sanitize(@question.text))
-            @question.update_attribute(:text, ActionController::Base.helpers.sanitize(@question.text))
+            @question.update_attribute(:text, ActionController::Base.helpers.sanitize(@question.text).gsub("&lt;","<"))
             begin    
                 construct(0)
             rescue
@@ -203,7 +203,7 @@ before_filter :author_user
             # else
                 flash.now[:success] = "question created."
                 @question.update_attribute(:safe_text, ActionController::Base.helpers.sanitize(@question.text)) 
-                @question.update_attribute(:text, ActionController::Base.helpers.sanitize(@question.text)) 
+                @question.update_attribute(:text, ActionController::Base.helpers.sanitize(@question.text).gsub("&lt;","<")) 
                 redirect_to @question
             # end
         else
