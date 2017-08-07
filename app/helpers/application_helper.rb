@@ -6,6 +6,16 @@ module ApplicationHelper
 
     require 'rubystats'
 
+    def uniquify(string,model)
+        newstring = string
+        i = 1
+        until !model.find_by_name(newstring)
+            newstring = string + "(#{i})"
+            i += 1
+        end
+        newstring
+    end
+
     def frac(x)
         if x.denominator == 1
             x.numerator.to_s

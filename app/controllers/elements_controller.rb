@@ -76,15 +76,15 @@ class ElementsController < ApplicationController
                 if tycode and tycode != oldcode
                     oldcode = tycode
                     title = v[2].split('\\')[-1][5..-1]
-                    nam = title
+                    #nam = title
                     link = "https://www.youtube.com/embed/" + tycode + "?rel=0"
                     unless Element.find_by_content(link)
-                        i = 1
-                        until !Element.find_by_name(nam)
-                            nam = title + "(#{i})"
-                            i += 1
-                        end
-                        data << [nam,link]
+                        # i = 1
+                        # until !Element.find_by_name(nam)
+                        #     nam = title + "(#{i})"
+                        #     i += 1
+                        # end
+                        data << [uniquify(title,Element),link]
                     end
 
 

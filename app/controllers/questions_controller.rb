@@ -185,9 +185,15 @@ before_filter :author_user
 
     def create
         @question = Question.new(question(params)[:question])
+        params[:id] ||= @question.id
+        setup
+        @question.name ||= "Unnamed questions"
+        @question.name = uniquify(@question.name,Question)
+        @question.answers = "[#{punc1}]" if !@question.answers or @question.answers == ""
         if current_user
             @question.update_attribute(:author, current_user.id)
         end
+
         if @question.save
             # if naughty_text?(@question)
             #     flash.now[:failure] ="Question created, but "+@flash_text
